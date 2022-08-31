@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\setting;
 use App\Models\vessel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class SettingController extends Controller
 {
@@ -16,7 +17,8 @@ class SettingController extends Controller
     public function index()
     {
         $VesselInfo = vessel::find(auth()->user()->boatid);
-        return view('setting',['VesselInfo'=>$VesselInfo]);
+        Session::get('isDhivehi') ? $lang = "dhi" : $lang = "eng";
+        return view("$lang.setting",['VesselInfo'=>$VesselInfo]);
     }
 
     /**

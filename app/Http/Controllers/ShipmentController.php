@@ -19,6 +19,7 @@ class ShipmentController extends Controller
      */
     public function index(Request $request)
     {
+        Session::get('isDhivehi') ? $lang = "dhi" : $lang = "eng";
         Session::put('NewCategory',$request->cateid);
         if(session::has('NewCustomer')){
             $allCategories = category::all();
@@ -30,15 +31,15 @@ class ShipmentController extends Controller
                     foreach($Shipments as $item){
                         $Total += $item->unit_price * $item->qty;
                     }
-                    return view('create',['allCategories' => $allCategories, 'Shipments'=>$Shipments, 'Total'=>$Total]);
+                    return view("$lang.create",['allCategories' => $allCategories, 'Shipments'=>$Shipments, 'Total'=>$Total]);
                     // return view('create',['allCategories' => $allCategories]);
                 }else{
-                    return view('create',['allCategories' => $allCategories]);
+                    return view("$lang.create",['allCategories' => $allCategories]);
 
                 }
             }else{
 
-                return view('create',['allCategories' => $allCategories]);
+                return view("$lang.create",['allCategories' => $allCategories]);
             }
         }else{
 
@@ -54,9 +55,9 @@ class ShipmentController extends Controller
      */
     public function create()
     {
+        Session::get('isDhivehi') ? $lang = "dhi" : $lang = "eng";
         $allCategories = category::all();
-        dd($allCategories);
-        return view('create',['allCategories' => $allCategories]);
+        return view("$lang.create",['allCategories' => $allCategories]);
     }
 
 
@@ -189,7 +190,7 @@ class ShipmentController extends Controller
     {
         if($request->submit == "delete"){
             $deleteItem = shipment::find($request->cateID);
-            // $fileName = 'item_img/'. $deleteItem->img_path;
+            $fileName = 'item_img/'. $deleteItem->img_path;
             File::delete($fileName);
             $deleteItem->delete();
             return redirect('/create');
