@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Image;
 
 class CategoryController extends Controller
@@ -16,7 +17,8 @@ class CategoryController extends Controller
     public function index()
     {
         $allCategories = category::all();
-        return view('dashboard',['allCategories' => $allCategories]);
+        Session::get('isDhivehi') ? $lang = "dhi" : $lang = "eng";
+        return view("$lang.dashboard",['allCategories' => $allCategories]);
     }
 
     /**

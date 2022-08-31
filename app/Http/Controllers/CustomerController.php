@@ -17,6 +17,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
+        Session::get('isDhivehi') ? $lang = "dhi" : $lang = "eng";
         if(session::has('NewCustomer')){
             return redirect('/create');
         }else{
@@ -32,12 +33,12 @@ class CustomerController extends Controller
                 }
                 else{
                     $allCategories = category::all();
-                    return view('create',['allCategories' => $allCategories]);
+                    return view("$lang.create",['allCategories' => $allCategories]);
                 }
             }
             else{
                 $allCategories = category::all();
-                return view('create',['allCategories' => $allCategories]);
+                return view("$lang.create",['allCategories' => $allCategories]);
             }
         }
     }

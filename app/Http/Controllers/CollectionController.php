@@ -8,7 +8,8 @@ use App\Models\customer;
 use App\Models\package;
 use App\Models\shipment;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File; 
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
 
 class CollectionController extends Controller
 {
@@ -20,7 +21,8 @@ class CollectionController extends Controller
     public function index()
     {
         $AllPackage = package::orderBy('id','DESC')->get();
-        return view('collect',['AllPackage'=>$AllPackage]);
+        Session::get('isDhivehi') ? $lang = "dhi" : $lang = "eng";
+        return view("$lang.collect",['AllPackage'=>$AllPackage]);
     }
 
     public function clam(Request $request)
@@ -34,7 +36,8 @@ class CollectionController extends Controller
         foreach($itemsLoaded as $item){
             $Total += $item->unit_price * $item->qty;
         }
-        return view('clam',['load'=>$load,'laodCustomer'=>$laodCustomer,'itemsLoaded'=>$itemsLoaded,'allCategories'=>$allCategories,'Total'=>$Total,'collectionDetails'=>$collectionDetails]);
+        Session::get('isDhivehi') ? $lang = "dhi" : $lang = "eng";
+        return view("$lang.clam",['load'=>$load,'laodCustomer'=>$laodCustomer,'itemsLoaded'=>$itemsLoaded,'allCategories'=>$allCategories,'Total'=>$Total,'collectionDetails'=>$collectionDetails]);
     }
 
     /**
@@ -44,7 +47,7 @@ class CollectionController extends Controller
      */
     public function create()
     {
-        dd($request);
+        // dd($request);
     }
 
     /**
@@ -139,6 +142,6 @@ class CollectionController extends Controller
      */
     public function destroy(collection $collection)
     {
-        dd($request);
+        // dd($request);
     }
 }
