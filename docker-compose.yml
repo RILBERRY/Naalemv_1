@@ -1,0 +1,33 @@
+version: '2'
+services:
+  app:
+    container_name: naalemv
+    image: chipaau/php:8.1
+    restart: always
+    stdin_open: true
+    extra_hosts:
+      - customer.naalemv:192.168.222.24
+    environment:
+      - VIRTUAL_HOST=customer.naalemv
+    volumes: 
+    - ./:/var/www/app
+    - ./hosts/naalemv.conf:/etc/apache2/sites-enabled/customer.naalemv.conf:ro
+
+    working_dir: /var/www/app
+
+    links:
+    - naalemvdb
+  naalemvdb:
+    container_name: naalemvdb
+    image: mysql:5.7.16
+    command: "--innodb_use_native_aio=0"
+    ports:
+    - "3322:3306"
+    environment:
+    - MYSQL_ROOT_PASSWORD=
+    - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+    - ./data:/var/lib/mysql
+networks:
+  default:
+    name: nginx-proxy

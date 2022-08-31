@@ -1,0 +1,469 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* login Pgae */
+body{
+    background-color:#128CFC;
+}
+.MaxContainer{
+    max-width: 610px;
+    margin: auto;   
+}
+.PageTitle{
+    text-align: center;
+    padding-top: 100px;
+    font-size: 35px;
+    color: #fff;
+}
+.mainCont{
+    height: 80vh;
+    max-width: 1000px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+}
+.imgCont, .loginForm{
+    width: 50%;
+}
+.FormBtn{
+    background-color: #059B41;
+    color: white;
+    border: none;
+}
+
+.imgCont {
+    display: flex;
+    justify-content: center;
+}
+.inputField{
+    border: none;
+    font-size:  16px;
+    /* border: 1px solid grey; */
+}
+.inputField, .FormBtn{
+    width: 90%;
+    margin: 15px;
+    padding: 10px;
+    border-radius: 10px;
+}
+.loginFormCont{
+    margin: 20px;
+    border-radius: 10px;
+    padding: 10px 0 ;
+    background-color: rgba(255, 255, 255, 0.575);
+}
+@media only screen and (max-width: 725px){
+    .mainCont{
+        display: block;
+    }
+    .loginForm{
+        width: 100%;
+    }
+    .imgCont{
+        width:100%;
+    }
+    .imgCont img{
+        width: 70%;
+    }
+    .PageTitle{
+        font-size: 25px;
+        padding:30px
+    }
+}
+.navBar{
+    position:fixed;
+    bottom:0;
+    left:0;
+    background-color:#1074d1;
+    z-index: 8;
+    width:100%;
+    
+    display: flex;
+    justify-content: space-evenly;
+
+}
+.navBar li{
+    width: 20%;
+    justify-content: center;
+    transition: all ease-in 1s;
+    padding: 10px 0px;
+    font-family: 'Luxurious Roman', cursive;
+    position: relative;
+    /* border: solid white 1px; */
+}
+.delBtn{
+    background-color: rgb(177, 25, 25) !important;
+    color: white;
+}
+.navBar li a{
+    text-decoration: none;
+    color: white ;
+    text-align: center;
+}
+.fa-plus-circle, .fa-arrow-circle-down{
+    position: relative;
+    top: -10px;
+}
+.NavCloser{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    z-index: 6;
+    display: none;
+    backdrop-filter: blur(1px);
+    background-color: rgba(214, 212, 212, 0.336);
+}
+.alert{
+    position: absolute;
+    top: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.alert-danger{
+    width: 300px;
+    padding: 20px;
+    color: rgb(143, 5, 5);
+    border-radius: 10px;
+    background-color:rgb(250, 232, 152);
+    
+}
+.BtnNone{
+    background-color: transparent !important;
+    color: white;
+    border: none;
+    margin-top: 15px;
+    font-size:14px;
+    font-family: 'Luxurious Roman', cursive;
+    font-weight: 500;
+}
+
+/* **************************************** */
+/* Dashboard */
+
+.topCont{
+    width:100%;
+    padding: 5px 20px;
+    display:flex;
+    justify-content: space-between;
+}
+.Logo{
+    padding-top: 5px;
+    color:white;
+    font-family: 'Luxurious Roman', cursive;
+}
+.Logo h2{
+    font-weight: 700;
+}
+.dash{
+    width: 40px;
+    margin: 5px;
+    height: 6px;
+    background-color: rgb(85, 84, 84);
+}
+.pageTitle{
+    padding: 5px 0;
+    text-align: center;
+    color: white;
+}
+.mainContainer{
+    background-color: white;
+    min-height: 120vh;
+    border-radius: 30px 30px 0 0 ;
+    margin-bottom: 20px;
+}
+.SFix{
+    min-height: 90vh;
+}
+.cardHolder{
+    width: 98%;
+    margin: auto;
+    padding-top: 10px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.card{
+    width:170px;
+    height: 155px;
+    border: 1px solid grey;
+    border-radius: 10px;
+    margin: 5px;
+    position: relative;
+    overflow: hidden;
+}
+.cardImg{
+    width:100%;
+    position: relative;
+    top: 50%;
+    -moz-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+.cardDetail{
+    position: absolute;
+    width: 90%;
+    left: 50%;
+    bottom: 5px;
+    -moz-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    transform: translateX(-50%);
+    font-size: 13px;
+    border-radius: 5px;
+    text-align: center;
+    z-index: 2;
+    background-color: rgba(255, 255, 255, 0.884);
+}
+.BtnCont{
+    border: none;
+    width: 95%;
+    max-width: 555px;
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%);
+    bottom: 100px;
+    background: white;
+    
+}
+.addButton{
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    background-color: #128BFC;
+    z-index: 5;
+
+}
+.cardHolder a{
+    text-decoration: none;
+    color: rgb(17, 17, 17);
+}
+.popUpContainer, #popUpContainer{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    width: 80%;
+    margin: auto;
+    background-color: rgb(206, 204, 204);
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    z-index: 7;
+    display: none;
+}
+
+/* **************************************** */
+/* create load */
+.p10{
+    padding: 5px;
+}
+.greytextBorder{
+    color: grey;
+    background-color:white;
+    border: none;
+    /* border: 1px solid grey; */
+}
+.ContContainer{
+    width: 90%;
+    margin: auto;
+    text-align: center;
+    padding: 10px;
+    background-color: rgb(229, 226, 226);
+    border-radius: 20px;
+    margin-top:10px;
+}
+.inputSmall{
+    padding: 5px;
+    margin: 5px;
+    width: 100%;
+}
+/* CateBackContainer */
+#CBC{
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    position: fixed;
+    z-index: 5;
+    top: 0;
+    left: 0;
+    display: none;
+}
+.CateContainer{
+    width: 100%;
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    left: 0;
+    display: none;
+}
+.Cateheading{
+    text-align: center;
+    padding: 10px;
+}
+.cardHolder{
+    margin-bottom: 100px;
+}
+
+
+li {
+    border-radius: 10px;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+.table-header {
+    background-color: #128BFC;
+    color: white;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+.table-row {
+    background-color: #ffffff;
+    box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.1);
+}
+.col-1 {
+    text-align: left;
+    padding-left: 10px;
+    flex-basis: 40%;
+}
+.col{
+    font-size: 16px;
+}
+.col-2 {
+    flex-basis: 25%;
+}
+.col-3 {
+    flex-basis: 5%;
+}
+.col-4 {
+    flex-basis: 30%;
+    text-align: right;
+}
+.w-25{
+    width: 33%;
+
+}
+.Summary{
+    text-align: right;
+    padding: 3px 5px;
+}
+.SaveBtn{
+    background-color: #059B41;
+}
+.addBtn{
+    background-color: #128BFC;
+    border: none;
+}
+.CateSaveBtn{
+    width: 80%;
+    border: none;
+    background-color: #059B41;
+    padding: 10px;
+    color: white;
+    border-radius: 10px;
+}
+.textDecod{
+    text-decoration: none;
+}
+/* **************************************** */
+/* confirmation page */
+.ViberBotQR{
+    width: 80%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.Note{
+    text-align: center;
+    padding: 10px;
+}
+.search{
+
+    width: 90%;
+    margin: auto;
+    padding-top: 10px;
+}
+.search input{
+    border: 1px solid black;
+    width: 90%;
+    margin: 15px;
+}
+.ItemCont{
+    width: 90%;
+    padding: 10px;
+    margin: 10px;
+    background-color: #128BFC;
+    color: rgb(224, 222, 222);
+    border-radius: 10px;
+    margin: auto;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.closer{
+    position: relative;
+    top: 20px;
+    left: 20px;
+    font-family: Arial;
+    color: grey;
+    width: 25px;
+}
+#payType, #paySlip{
+    display: none;
+}
+.CollectedCol{
+    background-color:green;
+}
+.StampCol{
+    position: relative;
+    top: 70%;
+    text-align: center;
+    color: green;
+    font-weight: bolder;
+    font-size: 30px;
+    margin-top:50px;
+}
+.TransferLink{
+    text-decoration: none;
+    color: rgb(44, 97, 212);
+    padding: 20px;
+    margin-top: 50px;
+}
+.CancelBtn{
+    background-color: rgb(231, 56, 56);
+}
+.GreenTable{
+    background-color: #60BA51;
+}
+.MiniBtn {
+    width: 70px;
+    margin: 5px;
+    padding: 3px;
+    border-radius: 5px;
+    background-color:#128BFC;
+    border: none;
+    color: white;
+}
+/* setting  */
+.popForm{
+    position: absolute;
+    top: 100px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color:#128BFC;
+    /* display: none; */
+}
+.loginFormCont h2{
+    color: rgb(54, 54, 54);
+    text-align: center;
+}
+
+
+/* **************************************** */
