@@ -26,36 +26,36 @@
                     </ul>
                 </div>
             @endif
-            <h4>CUSTOMER DETAILS</h4>
-            <input type="number" name="CustNumber" placeholder="Mobile Number" class="inputField inputSmall" onChange="CheckCustomer()" id="CustNo">
-            <input type="text" name="CustName" placeholder="Name" class="inputField inputSmall" id="CustName">
-            <input type="text" name="CustAddress" placeholder="House Name" class="inputField inputSmall" >
-            <select class="inputField inputSmall greytextBorder" name="LFrom" id="">
-                <option value="" >Load From</option>
-                <option value="K.MALE" >male'</option>
-            </select>
-            <select class="inputField inputSmall greytextBorder " name="ULTo" id="">
-                <option value="" >Un-Load To</option>
-                <option value="L.ISDHOO" >L-Isdhoo</option>
-            </select>
-            <button type="submit" name="Submit" value="SaveCust" class="FormBtn inputSmall ">SAVE</button>
+            <h4>މުދަލުގެ ވެރިފަރާތުގެ ތަފްސީލް</h4>
+            <input type="number" name="CustNumber" placeholder="މުދަލުގެ ވެރިފަރާތުގެ ނަންބަރު" class="inputField inputSmall tal">
+        <input type="text" name="CustName" placeholder="މުދަލުގެ ވެރިފަރާތުގެ ނަން" class="inputField inputSmall tal">
+        <input type="text" name="CustAddress" placeholder="މުދާފނުވާ ގޭގެ ންނަ" class="inputField inputSmall tal">
+        <select class="inputField inputSmall greytextBorder tal" name="LFrom" id="">
+            <option value="" >މުދާ އެރުވި ރަށުގެ ނަން</option>
+            <option value="K.MALE" >male'</option>
+        </select>
+        <select class="inputField inputSmall greytextBorder  tal" name="ULTo" id="">
+            <option value="" >މުދާ ބާލާނެ ރަށުގެ ނަން</option>
+            <option value="L.ISDHOO" >L-Isdhoo</option>
+        </select>
+            <button type="submit" name="Submit" value="SaveCust" class="FormBtn inputSmall ">ސޭވް</button>
         </form>
     
     @endif
 
     <!-- Items Loaded Container -->
     <div class="ContContainer">
-        <h4>LOAD DETAILS</h4>
+    <h4>މުދަލުގެ ތަފުސީލް</h4>
         <ul class="responsive-table">
             <li class="table-header">
-                <div class="col col-1">Details</div>
-                <div class="col col-2">cost</div>
-                <div class="col col-3">qty</div>
-                <div class="col col-4">Total</div>
+                <div class="col col-4 tal">ޖުމުލަ</div>
+                <div class="col col-3 tal">އަދަދު</div>
+                <div class="col col-2 tal">ރޭޓު</div>
+                <div class="col col-1 tal">ތަފުސީލް</div>
             </li>
             @if($Shipments ?? '')
             @foreach($Shipments as $items)
-            <li class="table-row" onclick="EditItem({{$items->id}})">
+            <li class="table-row" onclick="EditItem('{{$items->id}}')">
                 @foreach($allCategories as $cate)
                 @if($cate->id == $items->category_id)
                 <div class="col col-1" id="Ename{{$items->id}}" data-label="Des">{{$cate->cate_name}}</div>
@@ -120,7 +120,7 @@
         <h3 class="Cateheading">Categories</h3>
         <div class="cardHolder">
             @foreach($allCategories as $category)
-            <div class="card" onClick="AddNewItem({{$category->id}})">
+            <div class="card" onClick="AddNewItem('{{$category->id}}')">
                 <input type="hidden" id="name{{$category->id}}" value="{{$category->cate_name}}">
                 <input type="hidden" id="price{{$category->id}}" value="{{$category->unit_price}}">
                 <img src="img/{{$category -> img_path}}" alt="" srcset="" class="cardImg">

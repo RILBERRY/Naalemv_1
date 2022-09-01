@@ -4,7 +4,7 @@
     <div class="cardHolder">
         @foreach($allCategories as $category)
         {{-- <a href="create?cateid={{$category -> id}}"> --}}
-        <div class="card" onClick="AddNewItem({{$category->id}})" >
+        <div class="card" onClick="AddNewItem('{{$category->id}}')" >
             <img src="img/{{$category -> img_path}}" alt="" srcset="" class="cardImg">
             <div class="cardDetail">
                 <p>{{$category -> cate_name}}</p>
@@ -16,7 +16,7 @@
         
     </div>
     <div class="addButton BtnCont" onclick="PopUpContainer('category')">
-        <h3>+ New Category</h3>
+        <h3>+ އާ ބާވަތެއް ހަދަން</h3>
     </div>
     @if ($errors->any())
         <div id="alertMSG" class="alert alert-danger">
@@ -29,13 +29,13 @@
     @endif
     <form action="/dashboard" method="POST" enctype="multipart/form-data" id="popUpContainer">
         @csrf
-        <h3>Add new Category</h3>
-        <input type="text" name="cate_name" placeholder="Category Name" class="inputField">
-        <input type="number" name="unit_price" placeholder="Unit Price" step="0.01" class="inputField">
+        <h3>އާ ބާވަތެއް ހަދަން</h3>
+        <input type="text" name="cate_name" placeholder="ބާވަތުގެ ނަން" class="inputField">
+        <input type="number" name="unit_price" placeholder="ނާލު ނަގާވަރު" step="0.01" class="inputField">
         <input type="file" name="img" class="inputField"><br>
         
         <button class="CateSaveBtn" onclick="PopUpContainer('category')">
-            <h3>Save</h3>
+            <h3>ހަދާ</h3>
         </button>
     </form>
 
@@ -44,7 +44,7 @@
         <h3 class="Cateheading">Categories</h3>
         <div class="cardHolder">
             @foreach($allCategories as $category)
-            <div class="card" onClick="AddNewItem({{$category->id}})">
+            <div class="card" onClick="AddNewItem('{{$category->id}}')">
                 <input type="hidden" id="name{{$category->id}}" value="{{$category->cate_name}}">
                 <input type="hidden" id="price{{$category->id}}" value="{{$category->unit_price}}">
                 <img src="img/{{$category -> img_path}}" alt="" srcset="" class="cardImg">

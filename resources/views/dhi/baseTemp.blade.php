@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Luxurious+Roman&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/abd32b9c39.js" crossorigin="anonymous"></script>
-    <title>Naale MV - Dashboard</title>
+    <title>Naale MV - ފުރަތަމަ ސަފުހާ</title>
 </head>
 <body>
     <div class="MaxContainer">
@@ -22,14 +22,13 @@
             @if(Str::upper(Request::path()) == "SETTING")
             <form action="/logout" method="POST">
                 @csrf
-                <li id="NavL4"><button class="BtnNone" type="Submit">LOGOUT <i style="font-size:18px; padding:5px;" class="fas fa-sign-out-alt"></i></button></li>
+                <li id="NavL4"><button class="BtnNone" type="Submit">އެޕް އިން ނިއްވާލާ <i style="font-size:18px; padding:5px;" class="fas fa-sign-out-alt"></i></button></li>
             </form>
             @endif
             
         </div>
         <h3 class="pageTitle">{{Str::upper(Request::path())}}</h3>
         @if(Str::upper(Request::path()) == "SETTING")
-
             <div class="mainContainer p10 SFix">
         @else
         <div class="mainContainer p10">

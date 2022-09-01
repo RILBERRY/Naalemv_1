@@ -14,28 +14,28 @@
             </div>
         @endif
         <h4>CUSTOMER DETAILS</h4>
-        <input type="number" name="CustNumber" placeholder="Mobile Number" class="inputField inputSmall">
-        <input type="text" name="CustName" placeholder="Name" class="inputField inputSmall">
-        <input type="text" name="CustAddress" placeholder="House Name" class="inputField inputSmall">
+        <input type="number" name="CustNumber" placeholder="މުދަލުގެ ވެރިފަރާތުގެ ނަންބަރު" class="inputField inputSmall">
+        <input type="text" name="CustName" placeholder="މުދަލުގެ ވެރިފަރާތުގެ ނަން" class="inputField inputSmall">
+        <input type="text" name="CustAddress" placeholder="މުދާފނުވާ ގޭގެ ންނަ" class="inputField inputSmall">
         <select class="inputField inputSmall greytextBorder" name="LFrom" id="">
-            <option value="" >Load From</option>
+            <option value="" >މުދާ އެރުވި ރަށުގެ ނަން</option>
             <option value="K.MALE" >male'</option>
         </select>
         <select class="inputField inputSmall greytextBorder " name="ULTo" id="">
-            <option value="" >Un-Load To</option>
+            <option value="" >މުދާ ބާލާނެ ރަށުގެ ނަން</option>
             <option value="L.ISDHOO" >L-Isdhoo</option>
         </select>
         <button type="submit" name="Submit" value="SaveCust" class="FormBtn inputSmall ">SAVE</button>
     </form>
     <!-- Items Loaded Container -->
     <div class="ContContainer">
-        <h4>LOAD DETAILS</h4>
+        <h4>މުދަލުގެ ތަފުސީލް</h4>
         <ul class="responsive-table">
             <li class="table-header">
-                <div class="col col-1">Details</div>
-                <div class="col col-2">cost</div>
-                <div class="col col-3">qty</div>
-                <div class="col col-4">Total</div>
+                <div class="col col-1">ތަފުސީލް</div>
+                <div class="col col-2">ރޭޓު</div>
+                <div class="col col-3">އަދަދު</div>
+                <div class="col col-4">ޖުމުލަ</div>
             </li>
             <li class="table-row">
                 <div class="col col-1" data-label="Des">BOX</div>
