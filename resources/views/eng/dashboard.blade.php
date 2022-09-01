@@ -4,7 +4,7 @@
     <div class="cardHolder">
         @foreach($allCategories as $category)
         {{-- <a href="create?cateid={{$category -> id}}"> --}}
-        <div class="card" onClick="AddNewItem({{$category->id}})" >
+        <div class="card" onClick="AddNewItem('{{$category->id}}')" >
             <img src="img/{{$category -> img_path}}" alt="" srcset="" class="cardImg">
             <div class="cardDetail">
                 <p>{{$category -> cate_name}}</p>
@@ -44,7 +44,7 @@
         <h3 class="Cateheading">Categories</h3>
         <div class="cardHolder">
             @foreach($allCategories as $category)
-            <div class="card" onClick="AddNewItem({{$category->id}})">
+            <div class="card" onClick="AddNewItem('{{$category->id}}')">
                 <input type="hidden" id="name{{$category->id}}" value="{{$category->cate_name}}">
                 <input type="hidden" id="price{{$category->id}}" value="{{$category->unit_price}}">
                 <img src="img/{{$category -> img_path}}" alt="" srcset="" class="cardImg">

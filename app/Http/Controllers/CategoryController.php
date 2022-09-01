@@ -42,11 +42,13 @@ class CategoryController extends Controller
         $this->validate($request, [
             'cate_name' => ['required', 'string'],
             'unit_price' => ['required'],
-            'img' => ['required']
-        ]);
-        $newPath = time() . "_" . request('cate_name') . "." . request('img')->extension();
-        
-        request('img')->move(public_path("img"), $newPath);
+            // 'img' => ['required']
+        ]);;
+        $newPath = "default.png";
+        if(request('img')){
+            $newPath = time() . "_" . request('cate_name') . "." . request('img')->extension();   
+            request('img')->move(public_path("img"), $newPath);
+        }
         
         $newCategory = new category ([
             'cate_name' => request('cate_name'),
