@@ -1,7 +1,8 @@
 @extends('/eng/baseTemp')
 @section('content')
 
-    <div class="cardHolder">
+<input type="text" name="search" placeholder="Search Category Name" class="inputField inputSmall" id="CateSearch">
+    <div class="cardHolder" id="cardItems">
         @foreach($allCategories as $category)
         {{-- <a href="create?cateid={{$category -> id}}"> --}}
         <div class="card" onClick="AddNewItem('{{$category->id}}')" >
@@ -20,7 +21,7 @@
     </div>
     @if ($errors->any())
         <div id="alertMSG" class="alert alert-danger">
-            <ul>
+            <ul  >
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
@@ -34,7 +35,7 @@
         <input type="number" name="unit_price" placeholder="Unit Price" step="0.01" class="inputField">
         <input type="file" name="img" class="inputField"><br>
         
-        <button class="CateSaveBtn" onclick="PopUpContainer('category')">
+        <button class="CateSaveBtn" onclick="PopUpContainer('category')" onclick="saving()">
             <h3>Save</h3>
         </button>
     </form>
@@ -69,13 +70,34 @@
         @if(Session::has('newpackage'))
             <input type="hidden" id="packID" name="packID" value="{{Session::get('newpackage')->id}}" >
         @endif
-        <button Type="submit" class="CateSaveBtn posRela" name="submit" value="AddItem_Guest">
+        <button Type="submit" class="CateSaveBtn posRela" name="submit" value="AddItem_Guest" onclick="saving()">
             <h3 >ADD</h3>
         </button>
     </form>
     
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
+        $('#CateSearch').keyup(function(){
+            var apiUrl = "searchcate?s="+ document.getElementById('CateSearch').value;
+            document.getElementById('cardItems').innerHTML = "";
+            $.ajax({url: apiUrl, success: function(result){
+                $(result).each(function(index) {
+                    document.getElementById('cardItems').innerHTML  += "<div class='card' onClick='AddNewItem('"+index+"')' >"+
+                    "<img src='img/"+result[index].img_path+"' alt='' srcset='' class='cardImg'>"+
+                    "<div class='cardDetail'>"+
+                        "<p>"+result[index].cate_name+"</p>"+
+                        "<p>MVR "+result[index].unit_price+"/PER EACH</p>"+
+                    "</div>"+
+                "</div>"
+                });
+            }});
+            document.getElementById('cardItems').innerHTML
+        });
+        
         function PopUpContainer(_input){
+            if(document.getElementById('popUpContainer').style.display == 'block'){
+                saving();
+            }
             if(_input =="category"){
                 document.getElementById('popUpContainer').style.display = 'block';
                 document.getElementById('NavCloser').style.display = 'block';

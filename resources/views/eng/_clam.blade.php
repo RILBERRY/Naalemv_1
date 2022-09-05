@@ -14,7 +14,6 @@
             <option value="" >Un-Load To</option>
             <option value="" >L-Isdhoo</option>
         </select>
-        <!-- <button type="submit" class="FormBtn inputSmall ">SAVE</button> -->
     </div>
     
     <!-- Items Loaded Container -->
@@ -67,7 +66,7 @@
         </div>
     </div>
     <a href="/confirm.html">
-    <button class="addButton SaveBtn">
+    <button class="addButton SaveBtn" onclick="saving()" >
         <h3>COLLECT</h3>
     </button>
     </a>

@@ -20,27 +20,23 @@ class CustomerController extends Controller
         Session::get('isDhivehi') ? $lang = "dhi" : $lang = "eng";
         if(session::has('NewCustomer')){
             return redirect('/create');
-        }else{
-            // dd(session::get('NewCategory'));
-            $newpackage = package::all()->last();
-            if($newpackage != null){
-
-                if($newpackage->status =="LOADING"){
-                    $NewCustomer = customer::where('id',$newpackage->customer_id)->first();
-                    Session::put('NewCustomer',$NewCustomer);
-                    Session::put('newpackage',$newpackage);
-                    return redirect('/create');
-                }
-                else{
-                    $allCategories = category::all();
-                    return view("$lang.create",['allCategories' => $allCategories]);
-                }
-            }
-            else{
-                $allCategories = category::all();
-                return view("$lang.create",['allCategories' => $allCategories]);
-            }
         }
+
+        $allCategories = category::all();
+        $newpackage = package::all()->last();
+        if($newpackage != null){
+
+            if($newpackage->status =="LOADING"){
+                $NewCustomer = customer::where('id',$newpackage->customer_id)->first();
+                Session::put('NewCustomer',$NewCustomer);
+                Session::put('newpackage',$newpackage);
+                return redirect('/create');
+            }
+            
+            return view("$lang.create",['allCategories' => $allCategories]);
+        }
+        return view("$lang.create",['allCategories' => $allCategories]);
+        
     }
 
     /**

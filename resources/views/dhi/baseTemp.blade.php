@@ -22,7 +22,7 @@
             @if(Str::upper(Request::path()) == "SETTING")
             <form action="/logout" method="POST">
                 @csrf
-                <li id="NavL4"><button class="BtnNone" type="Submit">އެޕް އިން ނިއްވާލާ <i style="font-size:18px; padding:5px;" class="fas fa-sign-out-alt"></i></button></li>
+                <li id="NavL4"><button class="BtnNone" type="Submit" onclick="saving()" >އެޕް އިން ނިއްވާލާ <i style="font-size:18px; padding:5px;" class="fas fa-sign-out-alt"></i></button></li>
             </form>
             @endif
             

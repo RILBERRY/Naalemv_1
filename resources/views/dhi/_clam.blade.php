@@ -67,7 +67,7 @@
         </div>
     </div>
     <a href="/confirm.html">
-    <button class="addButton SaveBtn">
+    <button class="addButton SaveBtn" onclick="saving()" >
         <h3>COLLECT</h3>
     </button>
     </a>

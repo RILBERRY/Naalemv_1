@@ -1,6 +1,5 @@
-<!DOCTYPE html>
-@extends('/eng/baseTemp')
-@section('content')   
+@extends('eng/baseTemp')
+@section('content')  
 @if(Session()->has('NewCustomer') && Session::get('NewCustomer')->CustNumber != 0)
         <div class="ContContainer">
             <h4>CUSTOMER DETAILS</h4>
@@ -38,7 +37,7 @@
                 <option value="" >Un-Load To</option>
                 <option value="L.ISDHOO" >L-Isdhoo</option>
             </select>
-            <button type="submit" name="Submit" value="SaveCust" class="FormBtn inputSmall ">SAVE</button>
+            <button type="submit" name="Submit" value="SaveCust" class="FormBtn inputSmall " onclick="saving()">SAVE</button>
         </form>
     
     @endif
@@ -55,7 +54,7 @@
             </li>
             @if($Shipments ?? '')
             @foreach($Shipments as $items)
-            <li class="table-row" onclick="EditItem({{$items->id}})">
+            <li class="table-row" onclick="EditItem('{{$items->id}}')">
                 @foreach($allCategories as $cate)
                 @if($cate->id == $items->category_id)
                 <div class="col col-1" id="Ename{{$items->id}}" data-label="Des">{{$cate->cate_name}}</div>
@@ -63,13 +62,13 @@
                 @endforeach
                 <div class="col col-2" id="Eqty{{$items->id}}" data-label="U-Price">{{$items->qty}}</div>
                 <div class="col col-3" id="Eprice{{$items->id}}"data-label="qty">{{$items->unit_price}}</div>
-                <div class="col col-4" data-label="S-Total">{{$items->unit_price * $items->qty}}</div>
+                <div class="col col-4" data-label="S-Total">{{ number_format($items->unit_price * $items->qty, 2)}}</div>
             </li>
             @endforeach
             @endif 
         </ul>
         @if($Shipments ?? '') 
-        <p class="Summary" id="summary">Total {{$Total}} MVR</p>
+        <p class="Summary" id="summary"><strong>Total </strong> {{number_format($Total,2)}} MVR</p>
 
         @endif
         <button class="FormBtn inputSmall w-25 addBtn" onClick="openCate()"> + ADD NEW</button>
@@ -96,12 +95,12 @@
     <div class="BtnCont">
 
         @if(Session()->has('NewCustomer') && Session()->get('NewCustomer')->CustNumber)
-        <button class="addButton SaveBtn" name="SubmitType" value="SAVE" type="submit">
+        <button class="addButton SaveBtn" name="SubmitType" value="SAVE" type="submit" onclick="saving()">
             <h3>Save</h3>
         </button><br> <br>
         @endif
         @if(Session()->has('NewCustomer'))
-        <button class="addButton CancelBtn " name="SubmitType" value="CANCEL" type="submit">
+        <button class="addButton CancelBtn " name="SubmitType" value="CANCEL" type="submit" onclick="saving()">
             <h3>RESET FORM</h3>
         </button>
         @endif
@@ -120,7 +119,7 @@
         <h3 class="Cateheading">Categories</h3>
         <div class="cardHolder">
             @foreach($allCategories as $category)
-            <div class="card" onClick="AddNewItem({{$category->id}})">
+            <div class="card" onClick="AddNewItem('{{$category->id}}')">
                 <input type="hidden" id="name{{$category->id}}" value="{{$category->cate_name}}">
                 <input type="hidden" id="price{{$category->id}}" value="{{$category->unit_price}}">
                 <img src="img/{{$category -> img_path}}" alt="" srcset="" class="cardImg">
@@ -135,15 +134,7 @@
             <h3>+ New Category</h3>
         </div>
     </div>
-    @if ($errors->any())
-        <div id="alertMSG" class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+
     {{-- TO ADD NEW CATEGORY TO THE APP --}}
     <form action="/dashboard" method="POST" enctype="multipart/form-data" class="popUpContainer" id="popUpContainer">
         @csrf
@@ -152,7 +143,7 @@
         <input type="number" name="unit_price" placeholder="Unit Price" step="0.01" class="inputField">
         <input type="file" name="img" class="inputField"><br>
         
-        <button class="CateSaveBtn posRela" onclick="PopUpContainer('category')">
+        <button class="CateSaveBtn posRela" onclick="PopUpContainer('category')" onclick="saving()">
             <h3>Save</h3>
         </button>
     </form>
@@ -167,7 +158,7 @@
         @if(Session::has('newpackage'))
             <input type="hidden" id="packID" name="packID" value="{{Session::get('newpackage')->id}}" >
         @endif
-        <button Type="submit" class="CateSaveBtn posRela" name="submit" value="AddItem">
+        <button Type="submit" class="CateSaveBtn posRela" name="submit" value="AddItem" onclick="saving()">
             <h3 >ADD</h3>
         </button>
     </form>
@@ -182,26 +173,31 @@
         @if(Session::has('newpackage'))
             <input type="hidden" id="packID" name="packID" value="{{Session::get('newpackage')->id}}" >
         @endif
-        <input type="Submit" value="delete" name="submit" class="inputField delBtn"><br>
+        <input type="Submit" value="delete" name="submit" class="inputField delBtn" onclick="saving()"><br>
         
-        <button Type="submit" class="CateSaveBtn posRela" name="submit" value="AddItem" >
+        <button Type="submit" class="CateSaveBtn posRela" name="submit" value="AddItem" onclick="saving()">
             <h3 id="Update">ADD</h3>
         </button>
     </form>
 
     
+    
+    @if(Session::has('newpackage') && Session::get('NewCustomer')->CustNumber != 0)
     <Script>
-       
-        @if(Session::has('newpackage') && Session::get('NewCustomer')->CustNumber != 0)
         function openCate(){
             document.getElementById('CBC').style.display = 'block';
             document.getElementById('CC').style.display = 'block';
         }
-        @else
-        function openCate(){
-            alert('Create and save the customer details First.');
-        }
+    </Script>
+    @else
+        
+        <Script>
+            function openCate(){
+                alert('Create and save the customer details First.');
+            }
+            </Script>
         @endif
+    <Script>
         function Closer(){
             document.getElementById('CBC').style.display = 'none';
             document.getElementById('CC').style.display = 'none';

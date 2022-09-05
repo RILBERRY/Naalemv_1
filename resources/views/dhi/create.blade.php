@@ -18,7 +18,7 @@
         <form action="/customer" method="POST" class="ContContainer">
             @csrf
             @if ($errors->any())
-                <div id="alertMSG" class="alert alert-danger">
+                <div id="alert" class="alert alert-danger">
                     <ul>
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
