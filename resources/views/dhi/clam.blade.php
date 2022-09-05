@@ -89,7 +89,7 @@
             </div>
         </div>
         <div class="BtnCont">
-            <button class="addButton SaveBtn" id="CCBtn" type="submit">
+            <button class="addButton SaveBtn" id="CCBtn" type="submit" onclick="saving()" >
                 <h3 onclick="IsEditing()">Collected</h3>
             </button>
         </div>
@@ -112,7 +112,7 @@
         <input type="number" name="unit_price" placeholder="Unit Price" step="0.01" class="inputField">
         <input type="file" name="img" class="inputField"><br>
         
-        <button class="CateSaveBtn posRela" onclick="PopUpContainer('category')">
+        <button class="CateSaveBtn posRela" onclick="PopUpContainer('category')" >
             <h3>Save</h3>
         </button>
     </form>
@@ -128,7 +128,7 @@
             <input type="hidden" id="packID" name="packID" value="{{Session::get('newpackage')->id}}" >
         @endif
         <div class="BtnCont">
-            <button Type="submit" class="CateSaveBtn posRela" name="submit" value="AddItem" onclick="PopUpContainer('category')">
+            <button Type="submit" class="CateSaveBtn posRela" name="submit" value="AddItem" onclick="saving()"  onclick="PopUpContainer('category')">
                 <h3 >ADD</h3>
             </button>
         </div>
@@ -143,11 +143,11 @@
         @if(Session::has('newpackage'))
             <input type="hidden" id="packID" name="packID" value="{{Session::get('newpackage')->id}}" >
         @endif
-        <button type="Submit" value="delete" name="submit" class=" CateSaveBtn posRela delBtn">
+        <button type="Submit" value="delete" name="submit" class=" CateSaveBtn posRela delBtn" onclick="saving()" >
             <h3 >DELETE</h3>
         </button><br><br>
         
-        <button Type="submit" class="CateSaveBtn posRela" name="submit" value="AddItem" onclick="PopUpContainer('category')">
+        <button Type="submit" class="CateSaveBtn posRela" name="submit" value="AddItem" onclick="PopUpContainer('category')" onclick="saving()" >
             <h3 id="Update">ADD</h3>
         </button>
     </form>

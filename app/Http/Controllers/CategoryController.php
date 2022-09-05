@@ -26,9 +26,10 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function searchcate(Request $request)
     {
-        //
+        $searchCate = category::where('cate_name', 'LIKE', "%$request->s%")->get();
+        return  json_decode($searchCate, true); 
     }
 
     /**

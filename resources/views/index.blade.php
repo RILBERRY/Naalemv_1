@@ -8,6 +8,9 @@
     <title>Naale MV - Portal</title>
 </head>
 <body>
+    <div id="loading">
+        <i class="fas fa-spinner fa-pulse"></i>
+    </div> 
     <div class="MaxContainer">
         <h3 class="PageTitle">Naale MV</h3>
         <div class="mainCont">
@@ -28,7 +31,7 @@
                     @csrf
                     <input type="number" name="contact" placeholder="Mobile Number" class="inputField">
                     <input type="password" name="password" placeholder="Password" class="inputField">
-                    <button type="submit" class="FormBtn">LOGIN</button>
+                    <button type="submit" class="FormBtn" onclick="saving()">LOGIN</button>
                 </form>
             </div>
         </div>

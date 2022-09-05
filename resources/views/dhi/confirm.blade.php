@@ -4,7 +4,7 @@
     <img src="img/ViberBotQR.png" alt="" srcset="" class="ViberBotQR">
 
     <a href="/customer">
-        <button class="addButton SaveBtn">
+        <button class="addButton SaveBtn" onclick="saving()" >
             <h3>Done</h3>
         </button>
     </a>

@@ -67,7 +67,7 @@
                 <p class="PAID">{{$collectionDetails[0]->paymentType}} - PAYMENT</p>
             </div>
             <div class="BtnCont">
-            <button class="addButton SaveBtn" id="CCBtn" type="submit">
+            <button class="addButton SaveBtn" id="CCBtn" type="submit" >
                 <h3 >Back</h3>
             </button>
             </div>
@@ -89,7 +89,7 @@
             </div>
         </div>
         <div class="BtnCont">
-            <button class="addButton SaveBtn" id="CCBtn" type="submit">
+            <button class="addButton SaveBtn" id="CCBtn" type="submit" onclick="saving()" >
                 <h3 onclick="IsEditing()">Collected</h3>
             </button>
         </div>
@@ -112,7 +112,7 @@
         <input type="number" name="unit_price" placeholder="Unit Price" step="0.01" class="inputField">
         <input type="file" name="img" class="inputField"><br>
         
-        <button class="CateSaveBtn posRela" onclick="PopUpContainer('category')">
+        <button class="CateSaveBtn posRela" onclick="PopUpContainer('category')" onclick="saving()" >
             <h3>Save</h3>
         </button>
     </form>
@@ -147,7 +147,7 @@
             <h3 >DELETE</h3>
         </button><br><br>
         
-        <button Type="submit" class="CateSaveBtn posRela" name="submit" value="AddItem" onclick="PopUpContainer('category')">
+        <button Type="submit" class="CateSaveBtn posRela" name="submit" value="AddItem" onclick="PopUpContainer('category')" onclick="saving()">
             <h3 id="Update">ADD</h3>
         </button>
     </form>

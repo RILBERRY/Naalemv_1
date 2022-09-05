@@ -22,7 +22,7 @@
             @if(Str::upper(Request::path()) == "SETTING")
             <form action="/logout" method="POST">
                 @csrf
-                <li id="NavL4"><button class="BtnNone" type="Submit">LOGOUT <i style="font-size:18px; padding:5px;" class="fas fa-sign-out-alt"></i></button></li>
+                <li id="NavL4"><button class="BtnNone" type="Submit" onclick="saving()" >LOGOUT <i style="font-size:18px; padding:5px;" class="fas fa-sign-out-alt"></i></button></li>
             </form>
             @endif
             
@@ -33,6 +33,14 @@
             <div class="mainContainer p10 SFix">
         @else
         <div class="mainContainer p10">
+        @endif
+        <div id="loading">
+            <i class="fas fa-spinner fa-pulse"></i>
+        </div> 
+        @if (session('status'))
+            <div id="alertMSG" class="alert alert-danger">
+                {{ session('status') }}
+            </div>
         @endif
             <!-- Contents will be loaded hear from the database -->
             @yield('content')
@@ -57,9 +65,15 @@
         }
         setTimeout(function(){
             if(document.getElementById('alertMSG')){
-                document.getElementById('alertMSG').style.display = "none";
+                document.getElementById('alertMSG').style.display = 'none';
+                console.log(document.getElementById('alertMSG').style.display);
             }
-        }, 5000);
+        },3000);
+        function saving(){
+            // alert('onclick="saving()"');
+            document.getElementById('loading').style.display = block;
+        }
     </script>
+
 </body>
 </html>

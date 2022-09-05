@@ -54,6 +54,9 @@ class PackageController extends Controller
     public function store(Request $request)
     {
         if ($request->SubmitType == "SAVE"){
+            if(!shipment::where('packages_id', request('packageID'))->exists()) {
+                return redirect('/create')->with('status', 'No item added ');
+            } 
             if($request->payType == "CASH"){
                 $NewCollection = new collection ([
                     'packID' => request('packageID'),

@@ -8,6 +8,9 @@
     <title>Naale MV - Portal</title>
 </head>
 <body>
+    <div id="loading">
+        <i class="fas fa-spinner fa-pulse"></i>
+    </div> 
     <div class="MaxContainer">
         <h3 class="PageTitle">Naale MV</h3>
         <div class="mainCont">
@@ -34,7 +37,7 @@
                     <input type="text" name="email" placeholder="Email" class="inputField">
                     <input type="password" name="password" placeholder="Password" class="inputField">
                     <input type="password" name="password_confirmation" placeholder="Password Confirmation" class="inputField">
-                    <button type="submit" class="FormBtn">Register</button>
+                    <button type="submit" class="FormBtn" onclick="saving()" >Register</button>
                 </form>
             </div>
         </div>
