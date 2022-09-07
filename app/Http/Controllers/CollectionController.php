@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\collection;
+use App\Models\receivables;
 use App\Models\category;
 use App\Models\customer;
 use App\Models\package;
@@ -28,8 +28,7 @@ class CollectionController extends Controller
     public function clam(Request $request)
     {
         $Total = 0;
-        $load = package::where('id',$request->packid)->get();
-        $collectionDetails = collection::where('packID',$request->packid)->get();
+        $load = package::with('payment_status')->where('id',$request->packid)->get();
         $laodCustomer = customer::where('id',$load[0]->customer_id)->get();
         $itemsLoaded = shipment::where('packages_id',$request->packid)->get();
         $allCategories = category::all();
@@ -37,7 +36,7 @@ class CollectionController extends Controller
             $Total += $item->unit_price * $item->qty;
         }
         Session::get('isDhivehi') ? $lang = "dhi" : $lang = "eng";
-        return view("$lang.clam",['load'=>$load,'laodCustomer'=>$laodCustomer,'itemsLoaded'=>$itemsLoaded,'allCategories'=>$allCategories,'Total'=>$Total,'collectionDetails'=>$collectionDetails]);
+        return view("$lang.clam",['load'=>$load,'laodCustomer'=>$laodCustomer,'itemsLoaded'=>$itemsLoaded,'allCategories'=>$allCategories,'Total'=>$Total]);
     }
 
     /**
@@ -63,23 +62,23 @@ class CollectionController extends Controller
             return redirect('/clam?packid='.$request->packageID)->with('status','Update payment details before Marking collected');
         }elseif($request->payOption == "NOW"){
             if($request->payType == "CASH"){
-                $NewCollection = new collection ([
+                $Newreceivables = new receivables ([
                     'packID' => request('packageID'),
                     'paymentType' => Request('payType'),
                     'payslip' => ''
                 ]);
-                $NewCollection->save();
+                $Newreceivables->save();
             }elseif($request->payType == "TRANSFER"){
                 if($request->paySlip != null){
                     $newPath = time() . "_" . request('packageID') . "." . request('paySlip')->extension();
                     request('paySlip')->move(public_path("img"), $newPath);
 
-                    $NewCollection = new collection ([
+                    $Newreceivables = new receivables ([
                         'packID' => request('packageID'),
                         'paymentType' => Request('payType'),
                         'payslip' => $newPath
                     ]);
-                    $NewCollection->save();
+                    $Newreceivables->save();
                 }else{
                     $load = false;
                     return redirect('/clam?packid='.$request->packageID)->with('status','Please Attach the slip');

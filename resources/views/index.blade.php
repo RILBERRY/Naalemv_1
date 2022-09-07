@@ -38,7 +38,9 @@
     </div>
     <script>
         setTimeout(function(){
-            document.getElementById('alertMSG').style.display = "none";
+            if(document.getElementById('alertMSG')){
+                document.getElementById('alertMSG').style.display = 'none';
+            }
         }, 5000);
     </script>
 </body>

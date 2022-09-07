@@ -58,13 +58,13 @@
         </div>
     @endif
     @if($load[0]->status == "COLLECTED")
-        @if(count($collectionDetails) != 0)
-            @if($collectionDetails[0]->payslip != null)
-                <a href="img/{{$collectionDetails[0]->payslip}}" target="_blank"  class="TransferLink"><i class="fas fa-file-image" style="font-size:24px"></i> View transfer Slip</a>
+        @if(count($load[0]->payment_status) != 0)
+            @if($load[0]->payment_status->payslip != null)
+                <a href="img/{{$load[0]->payment_status->payslip}}" target="_blank"  class="TransferLink"><i class="fas fa-file-image" style="font-size:24px"></i> View transfer Slip</a>
             @endif
             <div class="StampCol">
                 <p class="Col">Collected</p>
-                <p class="PAID">{{$collectionDetails[0]->paymentType}} - PAYMENT</p>
+                <p class="PAID">{{$load[0]->payment_status->paymentType}} - PAYMENT</p>
             </div>
             <div class="BtnCont">
             <button class="addButton SaveBtn" id="CCBtn" type="submit" >
@@ -76,17 +76,28 @@
         <input type="hidden" name="packageID" value="{{$load[0]->id}}"> 
         <div class="ContContainer">
             <h4>PAYMENT DETAILS</h4>
+            @if($load[0]->payment_status->paymentType == "CASH")
+                @if($load[0]->payment_status->payslip != null)
+                    <a href="img/{{$load[0]->payment_status->payslip}}" target="_blank"  class="TransferLink"><i class="fas fa-file-image" style="font-size:24px"></i> View transfer Slip</a>
+                @endif
+                    <div class="StampCol">
+                        <p class="Col">Collected</p>
+                        <p class="PAID">{{$load[0]->payment_status->paymentType}} - PAYMENT</p>
+                    </div>
+            @else  
             <select class="inputField inputSmall  greytextBorder" name="payOption" id="payOption" onchange="PaymentDetail('payOption')">
                 <option value="POD" >Pay On Delivery</option>
                 <option value="NOW" >Pay Now</option>
             </select>
             <div class="PaymentPopup">
+                
                 <select class="inputField inputSmall greytextBorder " name="payType" id="payType" onchange="PaymentDetail('payType')">
                     <option value="CASH" >Cash</option>
                     <option value="TRANSFER" >Transfer</option>
                 </select>
                 <input type="file" id="paySlip" name="paySlip" placeholder="Name" class="inputField ">
             </div>
+            @endif
         </div>
         <div class="BtnCont">
             <button class="addButton SaveBtn" id="CCBtn" type="submit" onclick="saving()" >

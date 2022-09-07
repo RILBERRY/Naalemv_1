@@ -15,4 +15,8 @@ class package extends Model
         'status',
         'customer_id',
     ];
+    public function payment_status()
+    {
+        return $this->hasOne(receivables::class, 'packID');
+    }
 }

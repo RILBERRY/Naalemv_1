@@ -69,7 +69,7 @@ class ShipmentController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->submit == "AddItem"){
+        if($request->submit == "AddItem" || session::has('NewCustomer') ){
             $this->validate($request, [
                 'qty' => ['required'],
                 'unit_price' => ['required'],

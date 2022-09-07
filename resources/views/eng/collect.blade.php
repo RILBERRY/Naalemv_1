@@ -7,7 +7,7 @@
     <div class="ContContainer">
         <h4 class="TitleHeading">----------- items in Boat ----------- </h4>
         @foreach($AllPackage as $_AllPackage)
-        @if($_AllPackage->status != "COLLECTED")
+        @if($_AllPackage->status  == "LOADED")
         <a class="textDecod"href="clam?packid={{$_AllPackage->id}}">
             <div class="ItemCont">
                 <h4 class="LoadNo"><strong>Package : </strong> MG-L-{{$_AllPackage->id}}</h4>

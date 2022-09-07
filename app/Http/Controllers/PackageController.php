@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\customer;
-use App\Models\collection;
+use App\Models\receivables;
 use App\Models\shipment;
 use App\Models\category;
 use App\Models\package;
@@ -58,23 +58,23 @@ class PackageController extends Controller
                 return redirect('/create')->with('status', 'No item added ');
             } 
             if($request->payType == "CASH"){
-                $NewCollection = new collection ([
+                $Newreceivables = new receivables ([
                     'packID' => request('packageID'),
                     'paymentType' => Request('payType'),
                     'payslip' => ''
                 ]);
-                $NewCollection->save();
+                $Newreceivables->save();
             }elseif($request->payType == "TRANSFER"){
                 if($request->paySlip != null){
                     $newPath = time() . "_" . request('packageID') . "." . request('paySlip')->extension();
                     request('paySlip')->move(public_path("img"), $newPath);
 
-                    $NewCollection = new collection ([
+                    $Newreceivables = new receivables ([
                         'packID' => request('packageID'),
                         'paymentType' => Request('payType'),
                         'payslip' => $newPath
                     ]);
-                    $NewCollection->save();
+                    $Newreceivables->save();
                 }else{
                     return redirect('/create?packid='.$request->packageID)->with('status','Please Attach the slip');
                 }

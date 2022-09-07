@@ -82,7 +82,7 @@
             document.getElementById('cardItems').innerHTML = "";
             $.ajax({url: apiUrl, success: function(result){
                 $(result).each(function(index) {
-                    document.getElementById('cardItems').innerHTML  += "<div class='card' onClick='AddNewItem('"+index+"')' >"+
+                    document.getElementById('cardItems').innerHTML  += "<div class='card' onClick='AddNewItem("+result[index].id+")' >"+
                     "<img src='img/"+result[index].img_path+"' alt='' srcset='' class='cardImg'>"+
                     "<div class='cardDetail'>"+
                         "<p>"+result[index].cate_name+"</p>"+
