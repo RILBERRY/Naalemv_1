@@ -57,29 +57,33 @@ class PackageController extends Controller
             if(!shipment::where('packages_id', request('packageID'))->exists()) {
                 return redirect('/create')->with('status', 'No item added ');
             } 
-            if($request->payType == "CASH"){
-                $Newreceivables = new receivables ([
-                    'packID' => request('packageID'),
-                    'paymentType' => Request('payType'),
-                    'payslip' => ''
-                ]);
-                $Newreceivables->save();
-            }elseif($request->payType == "TRANSFER"){
-                if($request->paySlip != null){
-                    $newPath = time() . "_" . request('packageID') . "." . request('paySlip')->extension();
-                    request('paySlip')->move(public_path("img"), $newPath);
-
+            if($request->payOption != "POD"){
+                if($request->payType == "CASH"){
+                    dd($request);
                     $Newreceivables = new receivables ([
                         'packID' => request('packageID'),
                         'paymentType' => Request('payType'),
-                        'payslip' => $newPath
+                        'payslip' => ''
                     ]);
                     $Newreceivables->save();
-                }else{
-                    return redirect('/create?packid='.$request->packageID)->with('status','Please Attach the slip');
+                }elseif($request->payType == "TRANSFER"){
+                    if($request->paySlip != null){
+                        $newPath = time() . "_" . request('packageID') . "." . request('paySlip')->extension();
+                        request('paySlip')->move(public_path("img"), $newPath);
+    
+                        $Newreceivables = new receivables ([
+                            'packID' => request('packageID'),
+                            'paymentType' => Request('payType'),
+                            'payslip' => $newPath
+                        ]);
+                        $Newreceivables->save();
+                    }else{
+                        return redirect('/create?packid='.$request->packageID)->with('status','Please Attach the slip');
+                    }
                 }
-
             }
+           
+
             package::where('id', $request->packageID)->update([
                 'status' => "LOADED"
             ]);

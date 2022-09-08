@@ -12,5 +12,6 @@ class receivables extends Model
         'packID',
         'paymentType',
         'payslip',
+        'total',
     ];
 }

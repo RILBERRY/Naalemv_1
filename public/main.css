@@ -566,3 +566,12 @@ li {
     margin: 10px 20px;
     border: 1px solid grey;
 }
+.islandCard{
+    width: 90%;
+    margin: auto;
+    padding: 10px;
+    border: 1px solid grey;
+    border-radius: 10px;
+    margin-top: 10px;
+    text-align: center;
+}

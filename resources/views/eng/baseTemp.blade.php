@@ -59,9 +59,15 @@
     <script>
         function CloseNav(){
             document.getElementById('NavCloser').style.display = 'none';
-            document.getElementById('popUpContainer').style.display = 'none';
-            document.getElementById('AddItem').style.display ='none';
-            document.getElementById('EditItem').style.display = 'none';
+            if(document.getElementById('popUpContainer')){
+                document.getElementById('popUpContainer').style.display = 'none';
+            }
+            if(document.getElementById('AddItem')){
+                document.getElementById('AddItem').style.display ='none';
+            }
+            if(document.getElementById('EditItem')){
+                document.getElementById('EditItem').style.display = 'none';
+            }
         }
         setTimeout(function(){
             if(document.getElementById('alertMSG')){

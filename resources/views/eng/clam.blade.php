@@ -49,7 +49,7 @@
 @if($load[0]->status == "COLLECTED")
     <form action="collect" method="get" >
 @else
-    <form action="clam" method="POST" enctype="multipart/form-data">
+    <form action="/clam" method="POST" enctype="multipart/form-data">
 @endif
     @csrf
     @if (session('status'))
@@ -58,7 +58,7 @@
         </div>
     @endif
     @if($load[0]->status == "COLLECTED")
-        @if(count($load[0]->payment_status) != 0)
+        @if($load[0]->payment_status)
             @if($load[0]->payment_status->payslip != null)
                 <a href="img/{{$load[0]->payment_status->payslip}}" target="_blank"  class="TransferLink"><i class="fas fa-file-image" style="font-size:24px"></i> View transfer Slip</a>
             @endif
@@ -73,32 +73,35 @@
             </div>
         @endif
     @else
-        <input type="hidden" name="packageID" value="{{$load[0]->id}}"> 
-        <div class="ContContainer">
-            <h4>PAYMENT DETAILS</h4>
-            @if($load[0]->payment_status->paymentType == "CASH")
-                @if($load[0]->payment_status->payslip != null)
-                    <a href="img/{{$load[0]->payment_status->payslip}}" target="_blank"  class="TransferLink"><i class="fas fa-file-image" style="font-size:24px"></i> View transfer Slip</a>
-                @endif
+        @if($load[0]->payment_status)
+            <div class="ContContainer">
+                <h4>PAYMENT DETAILS</h4>
+                @if($load[0]->payment_status->paymentType == "CASH")
                     <div class="StampCol">
-                        <p class="Col">Collected</p>
+                        <p class="PAID">Total : {{$load[0]->payment_status->total}}</p>
                         <p class="PAID">{{$load[0]->payment_status->paymentType}} - PAYMENT</p>
                     </div>
-            @else  
-            <select class="inputField inputSmall  greytextBorder" name="payOption" id="payOption" onchange="PaymentDetail('payOption')">
-                <option value="POD" >Pay On Delivery</option>
-                <option value="NOW" >Pay Now</option>
-            </select>
-            <div class="PaymentPopup">
-                
-                <select class="inputField inputSmall greytextBorder " name="payType" id="payType" onchange="PaymentDetail('payType')">
-                    <option value="CASH" >Cash</option>
-                    <option value="TRANSFER" >Transfer</option>
-                </select>
-                <input type="file" id="paySlip" name="paySlip" placeholder="Name" class="inputField ">
+                @else
+                    <a href="img/{{$load[0]->payment_status->payslip}}" target="_blank"  class="TransferLink"><i class="fas fa-file-image" style="font-size:24px"></i> View transfer Slip</a>
+                @endif
             </div>
-            @endif
-        </div>
+        @else
+            <div class="ContContainer">
+                <select class="inputField inputSmall  greytextBorder" name="payOption" id="payOption" onchange="PaymentDetail('payOption')">
+                    <option value="POD" >Pay On Delivery</option>
+                    <option value="NOW" >Pay Now</option>
+                </select>
+                <div class="PaymentPopup">   
+                    <select class="inputField inputSmall greytextBorder " name="payType" id="payType" onchange="PaymentDetail('payType')">
+                        <option value="CASH" >Cash</option>
+                        <option value="TRANSFER" >Transfer</option>
+                    </select>
+                    <input type="file" id="paySlip" name="paySlip" placeholder="Name" class="inputField ">
+                </div>
+            </div>
+        @endif
+        <input type="hidden" name="packageID" value="{{$load[0]->id}}"> 
+        <input type="hidden" name="shipmentTotal" value="{{$Total}}"> 
         <div class="BtnCont">
             <button class="addButton SaveBtn" id="CCBtn" type="submit" onclick="saving()" >
                 <h3 onclick="IsEditing()">Collected</h3>
@@ -116,50 +119,21 @@
             </ul>
         </div>
     @endif
-    <form action="/dashboard" method="POST" enctype="multipart/form-data" class="popUpContainer" id="popUpContainer">
+   
+    <form action="/edit/0" method="post" enctype="multipart/form-data" class="popUpContainer"  id="EditItem">
         @csrf
-        <h3>Add new Category</h3>
-        <input type="text" name="cate_name" placeholder="Category Name" class="inputField">
-        <input type="number" name="unit_price" placeholder="Unit Price" step="0.01" class="inputField">
-        <input type="file" name="img" class="inputField"><br>
-        
-        <button class="CateSaveBtn posRela" onclick="PopUpContainer('category')" onclick="saving()" >
-            <h3>Save</h3>
-        </button>
-    </form>
-    <form action="/create" method="POST" enctype="multipart/form-data" class="popUpContainer" id="AddItem">
-        @csrf
-             <input type="hidden" id="ECateID" name="cateID" value="" >
+        <input type="hidden" name="_method" value="patch" >
+        <input type="hidden" name="shipmentID" value="{{$load[0]->id}}" >
         <h3 id="AddHeading">Add Goain items</h3>
-        <input type="number" name="qty" placeholder="Number of pieces"  class="inputField">
-        <input type="number" id="unit_price" name="unit_price" value="" step="0.01" class="inputField">
-        <input type="hidden" id="CateID" name="cateID" value="" >
-        <input type="file"  name="img" class="inputField"><br>
-        @if(Session::has('newpackage'))
-            <input type="hidden" id="packID" name="packID" value="{{Session::get('newpackage')->id}}" >
-        @endif
-        <div class="BtnCont">
-            <button Type="submit" class="CateSaveBtn posRela" name="submit" value="AddItem" onclick="PopUpContainer('category')">
-                <h3 >ADD</h3>
-            </button>
-        </div>
-    </form>
-    <form action="/create" method="POST" enctype="multipart/form-data" class="popUpContainer" id="EditItem">
-        @csrf
-        @method('delete')
-        <h3 id="EAddHeading">Add Goain items</h3>
         <input type="number" id="Eqty" name="qty" placeholder="Number of pieces"  class="inputField">
         <input type="number" id="Eunit_price" name="unit_price" value="" step="0.01" class="inputField">
         <input type="hidden" id="ECateID" name="cateID" value="" >
-        @if(Session::has('newpackage'))
-            <input type="hidden" id="packID" name="packID" value="{{Session::get('newpackage')->id}}" >
-        @endif
+        
+        <button Type="submit" class="CateSaveBtn posRela" name="submit" value="edit" onclick="PopUpContainer('category')" onclick="saving()">
+            <h3 id="Update">ADD</h3>
+        </button><br><br>
         <button type="Submit" value="delete" name="submit" class=" CateSaveBtn posRela delBtn">
             <h3 >DELETE</h3>
-        </button><br><br>
-        
-        <button Type="submit" class="CateSaveBtn posRela" name="submit" value="AddItem" onclick="PopUpContainer('category')" onclick="saving()">
-            <h3 id="Update">ADD</h3>
         </button>
     </form>
 
@@ -185,17 +159,7 @@
                 document.getElementById('NavCloser').style.display = 'block';
             }
         }
-        function AddNewItem(_ItemID){
-            var name = "name"+_ItemID;
-            var price = "price"+_ItemID;
-            var _name = document.getElementById(name).value;
-            var _price = document.getElementById(price).value;
-            document.getElementById('EAddHeading').innerHTML = "Add " +_name + " to Shipping";
-            document.getElementById('unit_price').value = _price;
-            document.getElementById('CateID').value = _ItemID;
-            document.getElementById('NavCloser').style.display = 'block';
-            document.getElementById('AddItem').style.display ='block';
-        }
+      
 
         function EditItem(_ItemID){
             if(document.getElementById('ES').value == 1){  
@@ -205,14 +169,14 @@
                 var _Ename = document.getElementById(Ename).innerHTML;
                 var _qty = document.getElementById(qty).innerHTML;
                 var _price = document.getElementById(price).innerHTML;
-                document.getElementById('AddHeading').innerHTML = "Edit Ship item " +_Ename + " ";
+                document.getElementById('AddHeading').innerHTML = "Edit item " +_Ename + " ";
                 document.getElementById('Eqty').value = _qty;
                 document.getElementById('Eunit_price').value = _price;
                 document.getElementById('ECateID').value = _ItemID;
                 document.getElementById('NavCloser').style.display = 'block';
                 document.getElementById('EditItem').style.display ='block';
                 document.getElementById('Update').innerHTML = "UPDATE";
-                document.getElementById('EditItem').action = "/create/"+_ItemID;
+                document.getElementById('EditItem').action = "/edit/"+_ItemID;
             }else{
                 alert("To edit items. Click EDIT button first")
             }

@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class islands extends Model
 {
     use HasFactory;
+    protected $fillable=[
+        'name',
+        'code',
+        'atoll_id',
+    ];
 }
