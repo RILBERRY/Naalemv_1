@@ -31,6 +31,8 @@ Route::get('customerinfo', [CustomerController::class, 'customerInfo'])->middlew
 Route::get('searchcate', [CategoryController::class, 'searchcate'])->middleware('auth');
 Route::get('/dashboard', [ShipmentController::class, 'island'])->middleware('auth');
 Route::post('/dashboard/island', [ShipmentController::class, 'createIsland'])->middleware('auth');
+Route::post('/setting/user', [SettingController::class,'AddNewUser'])->middleware('auth');
+Route::post('/setting/change', [SettingController::class,'ChangePassword'])->middleware('auth');
 
 
 // Route::resource('dashboard', CategoryController::class)->middleware('auth');

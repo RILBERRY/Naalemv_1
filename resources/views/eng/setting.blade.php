@@ -3,6 +3,7 @@
 @section('content')   
 
     <!-- users details -->
+    @if(auth()->user()->rank == "OWNER" )
     <div class="ContContainer" id="users">
         <h4>USERS</h4> 
         <ul class="responsive-table">
@@ -23,16 +24,19 @@
             <div class="MiniBtn middle" onClick="NewUser()"> + </div>
         </ul>
     </div>
+    @endif
     
-    <div class="ContContainer" id="changePass">
+    <form action="/setting/change" method="POST" class="ContContainer" id="changePass">
+        @csrf
         <h4>Change Password</h4> 
         <a href="/setting"><button class="MiniBtn" onClick=""> clear </button></a>
-        <input type="password" placeholder="Old Password" class="inputField inputSmall" >
-        <input type="password" placeholder="New Password" class="inputField inputSmall" >
-        <input type="password" placeholder="Confirm Password"class="inputField inputSmall" >
-        <button type="submit" name="Submit" value="SaveCust" class="FormBtn inputSmall ">UPDATE</button>
-    </div>
+        <input type="password" name="old_pass" placeholder="Old Password" class="inputField inputSmall" >
+        <input type="password" name="new_pass" placeholder="New Password" class="inputField inputSmall" >
+        <input type="password" name="con_pass" placeholder="Confirm Password"class="inputField inputSmall" >
+        <button type="submit" name="Submit"  class="FormBtn inputSmall ">UPDATE</button>
+    </form>
 
+    @if(auth()->user()->rank == "OWNER" )
     {{-- pop up form for creating new crew user --}}
     <div class="loginForm popForm" id="popForm" style="display:none" >
         @if ($errors->any())
@@ -44,21 +48,20 @@
                 </ul>
             </div>
         @endif
-        <form class="loginFormCont" action="/register" method="POST">
+        <form class="loginFormCont" action="/setting/user" method="POST">
             <h2>Create New User</h2>
             @csrf
-            <input type="text" name="Fname" placeholder="Fullsdf Name" class="inputField ">
+            <input type="text" name="Fname" placeholder="Full Name" class="inputField ">
             <input type="number" name="contact" placeholder="Mobile Number" class="inputField">
             <input type="text" name="email" placeholder="Email" class="inputField">
             <input type="password" name="password" placeholder="Password" class="inputField">
             <input type="password" name="password_confirmation" placeholder="Password Confirmation" class="inputField">
-
             <button type="submit" name="submit" class="FormBtn">Create</button>
             <button onclick="NewUserClose()" class="FormBtn CancelBtn">Cancel</button>
         </form>
         
     </div>
-
+    @endif
     <script>
         function NewUser(){
             document.getElementById('popForm').style.display='block';
