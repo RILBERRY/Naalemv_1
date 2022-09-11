@@ -23,9 +23,9 @@ class CustomerController extends Controller
             return redirect('/create');
         }
 
-        $selectedIsland = islands::orderBy('name','asc')->get();
+        $selectedIsland = islands::orderBy('name')->get();
         if($request->exists('island')){
-            $selectedIsland = islands::find($request->island);
+            $selectedIsland = islands::where( 'id',$request->island)->get();
 
         }
         $allCategories = category::all();

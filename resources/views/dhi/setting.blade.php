@@ -21,11 +21,13 @@
                 <div class="col col-4">Status</div>
             </li>
             
+            @foreach($users as $user)
             <li class="table-row">
-                <div class="col col-1" data-label="Des">Adam Ali</div>
-                <div class="col col-2" data-label="U-Price">9101010</div>
+                <div class="col col-1" data-label="Des">{{$user->name}}</div>
+                <div class="col col-2" data-label="U-Price">{{$user->name}}</div>
                 <div class="col col-4" data-label="S-Total" onclick="">Active</div>
             </li>
+            @endforeach
             <button class="MiniBtn" onClick=""> + </button>
         </ul>
     </div>

@@ -33,18 +33,17 @@
                 <option value="" >Load From</option>
                 <option value="K.MALE" >male'</option>
             </select>
-            @if(count($selectedIsland) = 1)
-            <select class="inputField inputSmall greytextBorder " name="ULTo" id="">
-                <option value="" >Un-Load To</option>
-                @foreach($$selectedIsland as $Island)
-                <option value="{{$Island->name}}" >{{$Island->name}}</option>
-                @endforeach
-            </select>
+            @if(count($selectedIsland) == 1)
+                <select class="inputField inputSmall greytextBorder " name="ULTo" id="">
+                    <option value="{{$selectedIsland[0]->name}}" >{{$selectedIsland[0]->name}}</option>
+                </select>
             @else
                 <select class="inputField inputSmall greytextBorder " name="ULTo" id="">
-                    <option value="{{$selectedIsland->name}}" >{{L-Isdhoo}}</option>
+                    <option value="" >Un-Load To</option>
+                    @foreach($selectedIsland as $Island)
+                    <option value="{{$Island->name}}">{{$Island->name}}</option>
+                    @endforeach
                 </select>
-
             @endif
             <button type="submit" name="Submit" value="SaveCust" class="FormBtn inputSmall " onclick="saving()">SAVE</button>
         </form>

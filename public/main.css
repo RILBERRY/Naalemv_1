@@ -31,6 +31,7 @@ body{
     background-color: #059B41;
     color: white;
     border: none;
+    text-align: center;
 }
 
 .imgCont {
@@ -49,10 +50,11 @@ body{
     border-radius: 10px;
 }
 .loginFormCont{
-    margin: 20px;
+    width: 90%;
+    margin: auto;
     border-radius: 10px;
     padding: 10px 0 ;
-    background-color: rgba(255, 255, 255, 0.575);
+    background-color: rgb(229, 226, 226);
 }
 @media only screen and (max-width: 725px){
     .mainCont{
@@ -437,6 +439,7 @@ li {
 }
 .CancelBtn{
     background-color: rgb(231, 56, 56);
+    cursor: pointer;
 }
 .GreenTable{
     background-color: #60BA51;
@@ -449,15 +452,16 @@ li {
     background-color:#128BFC;
     border: none;
     color: white;
+    cursor: pointer;
 }
 /* setting  */
 .popForm{
-    position: absolute;
+    /* position: absolute; */
     top: 100px;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color:#128BFC;
+    /* background-color:#128BFC; */
     /* display: none; */
 }
 .loginFormCont h2{
@@ -467,12 +471,6 @@ li {
 
 
 /* **************************************** */
-
-
-
-
-
-
 
 
 /* The container */
@@ -574,4 +572,14 @@ li {
     border-radius: 10px;
     margin-top: 10px;
     text-align: center;
+}
+.middle{
+    margin: auto;
+}
+.w-100{
+    width: 100%;
+}
+.clearBtn{
+    color: black;
+    background-color:transparent;
 }
