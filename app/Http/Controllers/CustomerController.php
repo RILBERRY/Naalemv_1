@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\category;
 use App\Models\package;
 use App\Models\customer;
+use App\Models\islands;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -15,13 +16,18 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         Session::get('isDhivehi') ? $lang = "dhi" : $lang = "eng";
         if(session::has('NewCustomer')){
             return redirect('/create');
         }
 
+        $selectedIsland = islands::orderBy('name')->get();
+        if($request->exists('island')){
+            $selectedIsland = islands::where( 'id',$request->island)->get();
+
+        }
         $allCategories = category::all();
         $newpackage = package::all()->last();
         if($newpackage != null){
@@ -32,10 +38,8 @@ class CustomerController extends Controller
                 Session::put('newpackage',$newpackage);
                 return redirect('/create');
             }
-            
-            return view("$lang.create",['allCategories' => $allCategories]);
         }
-        return view("$lang.create",['allCategories' => $allCategories]);
+        return view("$lang.create",['allCategories' => $allCategories,'selectedIsland'=>$selectedIsland]);
         
     }
 

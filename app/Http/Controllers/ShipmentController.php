@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\atoll;
 use App\Models\shipment;
 use App\Models\customer;
 use App\Models\package;
 use App\Models\category;
+use App\Models\islands;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\File; 
@@ -32,21 +34,65 @@ class ShipmentController extends Controller
                         $Total += $item->unit_price * $item->qty;
                     }
                     return view("$lang.create",['allCategories' => $allCategories, 'Shipments'=>$Shipments, 'Total'=>$Total]);
-                    // return view('create',['allCategories' => $allCategories]);
-                }else{
-                    return view("$lang.create",['allCategories' => $allCategories]);
-
                 }
-            }else{
-
-                return view("$lang.create",['allCategories' => $allCategories]);
             }
-        }else{
-
-            return redirect('/customer');
+            return view("$lang.create",['allCategories' => $allCategories]);
         }
+        return redirect('/customer');
+    }
+
+    function island(Request $request){
+        // Session::get('isDhivehi') ? $lang = "dhi" : $lang = "eng";
+        // Session::put('NewCategory',$request->cateid);
+        // if(session::has('NewCustomer')){
+        //     $allIslands = islands::all();
+        //     // dd(Session::get('newpackage'));
+        //     if(Session::has('newpackage')){
+        //         if (shipment::where('packages_id', Session::get('newpackage')->id)->exists()){
+        //             $Total = 0;
+        //             $Shipments = shipment::where('packages_id', Session::get('newpackage')->id)->get();
+        //             foreach($Shipments as $item){
+        //                 $Total += $item->unit_price * $item->qty;
+        //             }
+        //             return view("$lang.create",['allIslands' => $allIslands, 'Shipments'=>$Shipments, 'Total'=>$Total]);
+        //         }
+        //     }
+        //     return view("$lang.create",['allIslands' => $allIslands]);
+        // }
+        // return redirect('/customer');
+
+
+        $allIslands = islands::orderBy('name','asc')->get();
+        Session::get('isDhivehi') ? $lang = "dhi" : $lang = "eng";
+        return view("$lang.dashboard",['allIslands' => $allIslands]);
 
     }
+
+    function createIsland(Request $request){
+        $this->validate($request, [
+            'atoll' => ['required'],
+            'name' => ['required'],
+            'code' => ['required'],
+        ]);
+        if(!atoll::where('name',strtoupper($request->atoll))->exists()){
+            $atoll = new atoll([
+                'name'=>strtoupper($request->atoll),
+                'code'=>'-',
+            ]);
+            $atoll->save();
+        }
+        
+        $atoll = atoll::where('name',$request->atoll)->first();
+        $newIslands = new islands ([
+            'atoll_id' => $atoll->id,
+            'name' => $request->name,
+            'code' => $request->code,
+        ]);
+        $newIslands->save();
+        return redirect('dashboard')->with(['newIslands'=>$newIslands]);
+
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -69,7 +115,7 @@ class ShipmentController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->submit == "AddItem"){
+        if($request->submit == "AddItem" || session::has('NewCustomer') ){
             $this->validate($request, [
                 'qty' => ['required'],
                 'unit_price' => ['required'],
@@ -143,8 +189,6 @@ class ShipmentController extends Controller
                 'packages_id' => $newpackage->id
             ]);
             $newShipment->save();
-
-            return redirect('/create');
         }
         return redirect('/create');
     }
@@ -167,6 +211,7 @@ class ShipmentController extends Controller
      */
     public function edit(shipment $shipment)
     {
+        dd("asghdb");
     }
 
     /**

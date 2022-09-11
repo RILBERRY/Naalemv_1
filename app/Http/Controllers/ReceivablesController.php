@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\setting;
-use App\Models\User;
-use App\Models\vessel;
+use App\Models\receivables;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 
-class SettingController extends Controller
+class ReceivablesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,9 +14,7 @@ class SettingController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        Session::get('isDhivehi') ? $lang = "dhi" : $lang = "eng";
-        return view("$lang.setting",['users'=>$users]);
+        //
     }
 
     /**
@@ -46,10 +41,10 @@ class SettingController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\setting  $setting
+     * @param  \App\Models\receivables  $receivables
      * @return \Illuminate\Http\Response
      */
-    public function show(setting $setting)
+    public function show(receivables $receivables)
     {
         //
     }
@@ -57,10 +52,10 @@ class SettingController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\setting  $setting
+     * @param  \App\Models\receivables  $receivables
      * @return \Illuminate\Http\Response
      */
-    public function edit(setting $setting)
+    public function edit(receivables $receivables)
     {
         //
     }
@@ -69,10 +64,10 @@ class SettingController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\setting  $setting
+     * @param  \App\Models\receivables  $receivables
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, setting $setting)
+    public function update(Request $request, receivables $receivables)
     {
         //
     }
@@ -80,10 +75,10 @@ class SettingController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\setting  $setting
+     * @param  \App\Models\receivables  $receivables
      * @return \Illuminate\Http\Response
      */
-    public function destroy(setting $setting)
+    public function destroy(receivables $receivables)
     {
         //
     }

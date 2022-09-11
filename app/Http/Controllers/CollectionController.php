@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\collection;
+use App\Models\receivables;
 use App\Models\category;
 use App\Models\customer;
 use App\Models\package;
@@ -28,8 +28,7 @@ class CollectionController extends Controller
     public function clam(Request $request)
     {
         $Total = 0;
-        $load = package::where('id',$request->packid)->get();
-        $collectionDetails = collection::where('packID',$request->packid)->get();
+        $load = package::with('payment_status')->where('id',$request->packid)->get();
         $laodCustomer = customer::where('id',$load[0]->customer_id)->get();
         $itemsLoaded = shipment::where('packages_id',$request->packid)->get();
         $allCategories = category::all();
@@ -37,7 +36,7 @@ class CollectionController extends Controller
             $Total += $item->unit_price * $item->qty;
         }
         Session::get('isDhivehi') ? $lang = "dhi" : $lang = "eng";
-        return view("$lang.clam",['load'=>$load,'laodCustomer'=>$laodCustomer,'itemsLoaded'=>$itemsLoaded,'allCategories'=>$allCategories,'Total'=>$Total,'collectionDetails'=>$collectionDetails]);
+        return view("$lang.clam",['load'=>$load,'laodCustomer'=>$laodCustomer,'itemsLoaded'=>$itemsLoaded,'allCategories'=>$allCategories,'Total'=>$Total]);
     }
 
     /**
@@ -45,9 +44,20 @@ class CollectionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function search(Request $request)
     {
-        // dd($request);
+        $keyword = $request->q;
+        if($request->q == ""){
+            $result = package::orderBy('status','DESC')->get();
+            return  json_decode($result, true); 
+        }
+        $result = package::where(function ($query) use($keyword) {
+            $query
+                ->where('CustAddress', 'like', '%' . $keyword . '%')
+                ->orWhere('to', 'like', '%' . $keyword . '%')
+                ->orWhere('id', 'like', '%' . $keyword . '%');
+            })->get();
+        return  json_decode($result, true); 
     }
 
     /**
@@ -63,41 +73,50 @@ class CollectionController extends Controller
             return redirect('/clam?packid='.$request->packageID)->with('status','Update payment details before Marking collected');
         }elseif($request->payOption == "NOW"){
             if($request->payType == "CASH"){
-                $NewCollection = new collection ([
+                $Newreceivables = new receivables ([
                     'packID' => request('packageID'),
                     'paymentType' => Request('payType'),
-                    'payslip' => ''
+                    'payslip' => '',
+                    'total' => $request->shipmentTotal
                 ]);
-                $NewCollection->save();
+                $Newreceivables->save();
             }elseif($request->payType == "TRANSFER"){
                 if($request->paySlip != null){
                     $newPath = time() . "_" . request('packageID') . "." . request('paySlip')->extension();
                     request('paySlip')->move(public_path("img"), $newPath);
 
-                    $NewCollection = new collection ([
+                    $Newreceivables = new receivables ([
                         'packID' => request('packageID'),
                         'paymentType' => Request('payType'),
-                        'payslip' => $newPath
+                        'payslip' => $newPath,
+                        'total' => $request->shipmentTotal
                     ]);
-                    $NewCollection->save();
+                    $Newreceivables->save();
                 }else{
                     $load = false;
                     return redirect('/clam?packid='.$request->packageID)->with('status','Please Attach the slip');
                 }
 
             }else {
-                $Load = false;
                 return redirect('/clam?packid='.$request->packageID)->with('status','error occured while saving! Try again');
             }
-            if ($Load){
-                package::where('id', $request->packageID)->update([
-                    'status' => "COLLECTED"
-                ]);
+            
+        }else{
+            if(receivables::where('packID',$request->packageID)->exists()){
+                $paydetail = receivables::where('packID',$request->packageID)->first();
+                if($request->shipmentTotal != $paydetail->total){
+                    $paydetail->update([
+                        'total' => $request->shipmentTotal
+                    ]);
+                }
             }
-            return redirect('/collect') ;
-        }else {
-            return redirect('/clam?packid='.$request->packageID)->with('status','error occured while saving! Try again');
         }
+        if ($Load){
+            package::where('id', $request->packageID)->update([
+                'status' => "COLLECTED"
+            ]);
+        }
+        return redirect('/clam?packid='.$request->packageID); 
     }
 
     /**
@@ -117,9 +136,23 @@ class CollectionController extends Controller
      * @param  \App\Models\collection  $collection
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request)
+    public function edit(Request $request, $id)
     {
-        dd($request);
+        if($request->submit == "delete"){
+            $deleteItem = shipment::find($id);
+            if($deleteItem->img_path != 'load_default.png'){
+                $fileName = 'item_img/'. $deleteItem->img_path;
+                File::delete($fileName);
+            }
+            $deleteItem->delete();
+            return redirect('/create');
+        }elseif($request->submit == "edit"){
+            shipment::where('id', $id)->update([
+                'qty' => Request('qty'),
+                'unit_price' => Request('unit_price')
+            ]);
+            return redirect('/clam?packid='.$request->shipmentID);
+        }
     }
 
     /**
@@ -129,19 +162,5 @@ class CollectionController extends Controller
      * @param  \App\Models\collection  $collection
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, collection $collection)
-    {
-        dd($request);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\collection  $collection
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(collection $collection)
-    {
-        // dd($request);
-    }
+   
 }

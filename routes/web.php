@@ -23,17 +23,21 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-Route::resource('dashboard', CategoryController::class)->middleware('auth');
+Route::patch('/edit/{id}', [CollectionController::class,'edit'])->middleware('auth');
+Route::get('/collect/search', [CollectionController::class, 'search'])->middleware('auth');
+Route::post('clam', [CollectionController::class, 'complete'])->middleware('auth');
+Route::get('clam', [CollectionController::class, 'clam'])->middleware('auth');
+Route::get('customerinfo', [CustomerController::class, 'customerInfo'])->middleware('auth');
+Route::get('searchcate', [CategoryController::class, 'searchcate'])->middleware('auth');
+Route::get('/dashboard', [ShipmentController::class, 'island'])->middleware('auth');
+Route::post('/dashboard/island', [ShipmentController::class, 'createIsland'])->middleware('auth');
+
+
+// Route::resource('dashboard', CategoryController::class)->middleware('auth');
 Route::resource('create', ShipmentController::class)->middleware('auth');
 Route::resource('customer', CustomerController::class)->middleware('auth');
 Route::resource('confirm', PackageController::class)->middleware('auth');
 Route::resource('collect', CollectionController::class)->middleware('auth');
 Route::resource('setting', SettingController::class)->middleware('auth');
-Route::post('clam', [CollectionController::class, 'complete'])->middleware('auth');
-Route::get('clam', [CollectionController::class, 'clam'])->middleware('auth');
-Route::get('customerinfo', [CustomerController::class, 'customerInfo'])->middleware('auth');
-Route::get('searchcate', [CategoryController::class, 'searchcate'])->middleware('auth');
-
-
 
 
