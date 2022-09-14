@@ -37,9 +37,14 @@
         <div id="loading">
             <i class="fas fa-spinner fa-pulse"></i>
         </div> 
-        @if (session('status'))
+        @if (session('status_success'))
+            <div id="alertMSG" class="alert alert-success">
+                {{ session('status_success') }}
+            </div>
+        @endif
+        @if (session('status_error'))
             <div id="alertMSG" class="alert alert-danger">
-                {{ session('status') }}
+                {{ session('status_error') }}
             </div>
         @endif
             <!-- Contents will be loaded hear from the database -->
@@ -76,8 +81,7 @@
             }
         },3000);
         function saving(){
-            // alert('onclick="saving()"');
-            document.getElementById('loading').style.display = block;
+            document.getElementById('loading').style.display = 'block';
         }
     </script>
 

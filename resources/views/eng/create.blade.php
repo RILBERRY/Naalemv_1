@@ -82,7 +82,7 @@
         <button class="FormBtn inputSmall w-25 addBtn" onClick="openCate()"> + ADD NEW</button>
     </div>
 @if(Session()->has('NewCustomer'))
-<form action="confirm" method="post">
+<form action="confirm" method="post" enctype="multipart/form-data">
 @csrf
 <input type="hidden" name="packageID" value="{{Session::get('newpackage')->id}}">
 @endif 
@@ -103,6 +103,9 @@
     <div class="BtnCont">
 
         @if(Session()->has('NewCustomer') && Session()->get('NewCustomer')->CustNumber)
+        @if($Shipments ?? '') 
+        <input type="hidden" name="shipmentTotal" value="{{$Total}}"> 
+        @endif
         <button class="addButton SaveBtn" name="SubmitType" value="SAVE" type="submit" onclick="saving()">
             <h3>Save</h3>
         </button><br> <br>
@@ -144,7 +147,7 @@
     </div>
 
     {{-- TO ADD NEW CATEGORY TO THE APP --}}
-    <form action="/dashboard" method="POST" enctype="multipart/form-data" class="popUpContainer" id="popUpContainer">
+    <form action="/category" method="POST" enctype="multipart/form-data" class="popUpContainer" id="popUpContainer">
         @csrf
         <h3>Add new Category</h3>
         <input type="text" name="cate_name" placeholder="Category Name" class="inputField">
@@ -193,8 +196,9 @@
     @if(Session::has('newpackage') && Session::get('NewCustomer')->CustNumber != 0)
     <Script>
         function openCate(){
-            document.getElementById('CBC').style.display = 'block';
-            document.getElementById('CC').style.display = 'block';
+            window.location.href = "/category";
+            // document.getElementById('CBC').style.display = 'block';
+            // document.getElementById('CC').style.display = 'block';
         }
     </Script>
     @else

@@ -53,7 +53,7 @@ class CreateNewUser implements CreatesNewUsers
             ]);
 
         }else{
-            return redirect('/register')->with('status','The vessel name is already register!!');
+            return redirect('/register')->with('status_error','The vessel name is already register!!');
         }
     }
 }
