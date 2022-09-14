@@ -18,7 +18,7 @@ class CategoryController extends Controller
     {
         $allCategories = category::all();
         Session::get('isDhivehi') ? $lang = "dhi" : $lang = "eng";
-        return view("$lang.dashboard",['allCategories' => $allCategories]);
+        return view("$lang.category",['allCategories' => $allCategories]);
     }
 
     /**
@@ -57,7 +57,7 @@ class CategoryController extends Controller
             'img_path' => $newPath
         ]);
         $newCategory->save();
-        return redirect('/dashboard');
+        return redirect('/category');
     }
 
     /**

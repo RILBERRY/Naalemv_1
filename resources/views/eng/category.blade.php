@@ -28,7 +28,7 @@
             </ul>
         </div>
     @endif
-    <form action="/dashboard" method="POST" enctype="multipart/form-data" id="popUpContainer">
+    <form action="/category" method="POST" enctype="multipart/form-data" id="popUpContainer">
         @csrf
         <h3>Add new Category</h3>
         <input type="text" name="cate_name" placeholder="Category Name" class="inputField">

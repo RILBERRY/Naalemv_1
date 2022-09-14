@@ -55,30 +55,31 @@ class PackageController extends Controller
     {
         if ($request->SubmitType == "SAVE"){
             if(!shipment::where('packages_id', request('packageID'))->exists()) {
-                return redirect('/create')->with('status', 'No item added ');
+                return redirect('/create')->with('status_error', 'No item added ');
             } 
             if($request->payOption != "POD"){
                 if($request->payType == "CASH"){
-                    dd($request);
                     $Newreceivables = new receivables ([
                         'packID' => request('packageID'),
                         'paymentType' => Request('payType'),
-                        'payslip' => ''
+                        'payslip' => '',
+                        'total' => $request->shipmentTotal 
                     ]);
                     $Newreceivables->save();
                 }elseif($request->payType == "TRANSFER"){
                     if($request->paySlip != null){
-                        $newPath = time() . "_" . request('packageID') . "." . request('paySlip')->extension();
+                        $newPath = time() . "_" . $request['packageID'] . "." . $request['paySlip']->extension();
                         request('paySlip')->move(public_path("img"), $newPath);
     
                         $Newreceivables = new receivables ([
                             'packID' => request('packageID'),
                             'paymentType' => Request('payType'),
-                            'payslip' => $newPath
+                            'payslip' => $newPath,
+                            'total' => $request->shipmentTotal 
                         ]);
                         $Newreceivables->save();
                     }else{
-                        return redirect('/create?packid='.$request->packageID)->with('status','Please Attach the slip');
+                        return redirect('/create?packid='.$request->packageID)->with('status_error','Please Attach the slip');
                     }
                 }
             }

@@ -59,7 +59,7 @@ class SettingController extends Controller
             ])->save();
             return redirect('/setting')->with('status', 'New Crew is created');
         }
-        return redirect('/setting')->with('status', 'Password dont match');
+        return redirect('/setting')->with('status_error', 'Password dont match');
     }
 
     /**
@@ -72,13 +72,13 @@ class SettingController extends Controller
     {
         $user = User::find(auth()->user()->id);    
         if (! Hash::check($request['old_pass'], $user->password) || $request['new_pass'] != $request['con_pass']) {
-            return redirect('/setting')->with('status','Password doesent match');
+            return redirect('/setting')->with('status_error','Password doesent match');
         }
 
         $user->forceFill([
             'password' => Hash::make($request['new_pass']),
         ])->save();
-        return redirect('/setting')->with('status','Password Change Successfull');
+        return redirect('/setting')->with('status_success','Password Change Successfull');
        
     }
 
@@ -111,9 +111,30 @@ class SettingController extends Controller
      * @param  \App\Models\setting  $setting
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, setting $setting)
-    {
-        //
+    public function update(Request $request, $id )
+    {   
+        $editingUser = User::find($id);  
+        $editingUser->Update([
+            'fullname' => $request['Fname'],
+            'contact' => $request['contact'],
+            'email' => $request['email'],
+            'status' => $request['status'],
+        ]);
+
+        if($request['password']){
+            if ($request['password'] != $request['password_confirmation']) {
+                return redirect('/setting')->with('status_error','Password doesent match');
+            }
+            $editingUser->forceFill([
+                'password' => Hash::make($request['password']),
+            ])->save();
+            return redirect('/setting')->with('status_success','Password Change Successfull');
+            
+        }
+        
+        return redirect('/setting')->with('status_success','User update Sucessfull');
+
+        
     }
 
     /**

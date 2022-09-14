@@ -10,14 +10,15 @@
         <h4>USERS</h4> 
         <ul class="responsive-table">
             <li class="table-header">
-                <div class="col col-1">Name</div>
+                <div class="col col-2">Name</div>
                 <div class="col col-2">Role</div>
                 <div class="col col-2">Contact</div>
                 <div class="col col-4">Status</div>
             </li>
             @foreach($users as $user)
             <li class="table-row" onclick="NewUser('{{$user->id}}')">
-                <div class="col col-1" id="name{{$user->id}}" data-label="Des">{{$user->fullname}}</div>
+                <div class="col col-2" id="name{{$user->id}}" data-label="Des">{{$user->fullname}}</div>
+                <div class="col col-2" id="email{{$user->id}}" data-label="U-Price" style="display: none" >{{$user->email}}</div>
                 <div class="col col-2" id="rank{{$user->id}}" data-label="U-Price">{{$user->rank}}</div>
                 <div class="col col-2" id="contact{{$user->id}}" data-label="U-Price">{{$user->contact}}</div>
                 <div class="col col-4" id="status{{$user->id}}" data-label="S-Total" >{{$user->status === 1?'has Access':'No Access'}}</div>
@@ -72,7 +73,7 @@
             <input type="text" id="email" name="email" placeholder="Email" class="inputField">
             <input type="password" name="password" placeholder="Password" class="inputField">
             <input type="password" name="password_confirmation" placeholder="Password Confirmation" class="inputField">
-            <select name="Status" id="status"  class="inputField">
+            <select name="status" id="status"  class="inputField">
                 <option value="0">Remove Access</option>
                 <option value="1">has Access</option>
             </select>
@@ -108,9 +109,9 @@
         function FillForm(id){
             $('#name').val($('#name'+id).text());
             $('#contact').val($('#contact'+id).text());
-            $('#name').val($('#name'+id).text());
+            $('#email').val($('#email'+id).text());
             $('#editForm').attr('action', '/setting/user/'+id);
-            $('#status'+id)!=='has Access' ? $('#status').val(1): $('#status').val(0);
+            $('#status'+id).text() ==='has Access' ? $('#status').val(1): $('#status').val(0);
         }
     </script>
 

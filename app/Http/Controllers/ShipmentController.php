@@ -25,7 +25,6 @@ class ShipmentController extends Controller
         Session::put('NewCategory',$request->cateid);
         if(session::has('NewCustomer')){
             $allCategories = category::all();
-            // dd(Session::get('newpackage'));
             if(Session::has('newpackage')){
                 if (shipment::where('packages_id', Session::get('newpackage')->id)->exists()){
                     $Total = 0;
@@ -42,26 +41,6 @@ class ShipmentController extends Controller
     }
 
     function island(Request $request){
-        // Session::get('isDhivehi') ? $lang = "dhi" : $lang = "eng";
-        // Session::put('NewCategory',$request->cateid);
-        // if(session::has('NewCustomer')){
-        //     $allIslands = islands::all();
-        //     // dd(Session::get('newpackage'));
-        //     if(Session::has('newpackage')){
-        //         if (shipment::where('packages_id', Session::get('newpackage')->id)->exists()){
-        //             $Total = 0;
-        //             $Shipments = shipment::where('packages_id', Session::get('newpackage')->id)->get();
-        //             foreach($Shipments as $item){
-        //                 $Total += $item->unit_price * $item->qty;
-        //             }
-        //             return view("$lang.create",['allIslands' => $allIslands, 'Shipments'=>$Shipments, 'Total'=>$Total]);
-        //         }
-        //     }
-        //     return view("$lang.create",['allIslands' => $allIslands]);
-        // }
-        // return redirect('/customer');
-
-
         $allIslands = islands::orderBy('name','asc')->get();
         Session::get('isDhivehi') ? $lang = "dhi" : $lang = "eng";
         return view("$lang.dashboard",['allIslands' => $allIslands]);

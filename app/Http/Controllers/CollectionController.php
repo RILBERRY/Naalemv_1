@@ -70,7 +70,7 @@ class CollectionController extends Controller
     {
         $Load = true;
         if($request->payOption == "POD"){
-            return redirect('/clam?packid='.$request->packageID)->with('status','Update payment details before Marking collected');
+            return redirect('/clam?packid='.$request->packageID)->with('status_error','Update payment details before Marking collected');
         }elseif($request->payOption == "NOW"){
             if($request->payType == "CASH"){
                 $Newreceivables = new receivables ([
@@ -94,11 +94,11 @@ class CollectionController extends Controller
                     $Newreceivables->save();
                 }else{
                     $load = false;
-                    return redirect('/clam?packid='.$request->packageID)->with('status','Please Attach the slip');
+                    return redirect('/clam?packid='.$request->packageID)->with('status_error','Please Attach the slip');
                 }
 
             }else {
-                return redirect('/clam?packid='.$request->packageID)->with('status','error occured while saving! Try again');
+                return redirect('/clam?packid='.$request->packageID)->with('status_error','error occured while saving! Try again');
             }
             
         }else{

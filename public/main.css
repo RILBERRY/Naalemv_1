@@ -127,9 +127,17 @@ body{
 .alert-danger{
     width: 300px;
     padding: 20px;
-    color: rgb(143, 5, 5);
+    color: rgb(255, 255, 255);
     border-radius: 10px;
-    background-color:rgb(250, 232, 152);
+    background-color:rgb(165, 77, 77);
+    
+}
+.alert-success{
+    width: 300px;
+    padding: 20px;
+    color: rgb(255, 255, 255);
+    border-radius: 10px;
+    background-color:rgb(54, 178, 81);
     
 }
 .BtnNone{
@@ -428,8 +436,7 @@ li {
     text-align: center;
     color: green;
     font-weight: bolder;
-    font-size: 30px;
-    margin-top:50px;
+    font-size: 20px;
 }
 .TransferLink{
     text-decoration: none;
