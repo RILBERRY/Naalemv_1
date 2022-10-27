@@ -20,7 +20,7 @@ class CollectionController extends Controller
      */
     public function index()
     {
-        $AllPackage = package::orderBy('id','DESC')->get();
+        $AllPackage = package::where('vessel_id',auth()->user()->boatid)->orderBy('id','DESC')->get();
         Session::get('isDhivehi') ? $lang = "dhi" : $lang = "eng";
         return view("$lang.collect",['AllPackage'=>$AllPackage]);
     }

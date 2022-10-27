@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Actions\Fortify\PasswordValidationRules;
 use App\Models\setting;
 use App\Models\User;
+use App\Models\islands;
+use App\Models\schedule;
 use App\Models\vessel;
 use GrahamCampbell\ResultType\Success;
 use Illuminate\Http\Request;
@@ -24,9 +26,29 @@ class SettingController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $vessel = vessel::find(auth()->user()->boatid);
+        $DepatrueTime = schedule::where([['vessel_name',$vessel->name],['status','!=', 'COMPLETE']])->orderByDesc('id')->first();
+        $allIslands = islands::orderBy('name','asc')->get();
+        $users = User::where('boatid',auth()->user()->boatid)->where('rank','!=','customer')->get();
         Session::get('isDhivehi') ? $lang = "dhi" : $lang = "eng";
-        return view("$lang.setting",['users'=>$users]);
+        return view("$lang.setting",['users'=>$users, 'allIslands'=> $allIslands, 'DepatrueTime'=>$DepatrueTime]);
+    }
+    public function dathuru(Request $request){
+        $this->validate($request, [
+            'DI' => ['required'],
+            'VI' => ['required'],
+            'DDate' => ['required'],
+        ]);
+        $vesselName = vessel::find(auth()->user()->boatid);
+        schedule::create([
+            'dep_date' => $request['DDate'],
+            'visiting_to' => $request['VI'],
+            'dock_island' => $request['DI'],
+            'vessel_name' => $vesselName->name,
+            'vessel_Contact' => auth()->user()->contact,
+            'status' => "",
+        ])->save();
+        return redirect('/setting');
     }
 
     /**
@@ -72,12 +94,18 @@ class SettingController extends Controller
     {
         $user = User::find(auth()->user()->id);    
         if (! Hash::check($request['old_pass'], $user->password) || $request['new_pass'] != $request['con_pass']) {
+            if(auth()->user()->rank == "customer"){
+                return redirect('/customer/setting')->with('status_error','Password doesent match');
+            }
             return redirect('/setting')->with('status_error','Password doesent match');
         }
 
         $user->forceFill([
             'password' => Hash::make($request['new_pass']),
         ])->save();
+        if(auth()->user()->rank == "customer"){
+            return redirect('/customer/setting')->with('status_success','Password Change Successfull');
+        }
         return redirect('/setting')->with('status_success','Password Change Successfull');
        
     }
@@ -133,6 +161,27 @@ class SettingController extends Controller
         }
         
         return redirect('/setting')->with('status_success','User update Sucessfull');
+
+        
+    }
+    public function dathuruUpdate(Request $request, $id )
+    {   
+        $editingdathuru = schedule::find($id);  
+        if($request->completed == "COMPLETE"){
+            $editingdathuru->Update([
+                'status' => $request['completed'],
+            ]);
+            return redirect('/setting')->with('status_success','Dhathuru update Sucessfull');
+        }
+        $status = "";
+        if($request['status']){
+            $status = $request['status'];
+        }
+        $editingdathuru->Update([
+            'dep_date' => $request['DDate'],
+            'status' => $status,
+        ]);
+        return redirect('/setting')->with('status_success','Dhathuru update Sucessfull');
 
         
     }

@@ -32,6 +32,9 @@
                     <input type="number" name="contact" placeholder="Mobile Number" class="inputField">
                     <input type="password" name="password" placeholder="Password" class="inputField">
                     <button type="submit" class="FormBtn" onclick="saving()">LOGIN</button>
+                    <div class="RegBtn">
+                        <a href="/register" class="regLink">Register</a>
+                    </div>
                 </form>
             </div>
         </div>

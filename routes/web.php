@@ -22,25 +22,36 @@ use App\Http\Controllers\SettingController;
 Route::get('/', function () {
     return redirect('/login');
 });
+Route::middleware('auth')->group(function () {
+    Route::get('customer/dashboard', [CustomerController::class, 'dashboard']);
+    Route::get('customer/schedule', [CustomerController::class, 'schedule']);
+    Route::get('customer/transaction', [CustomerController::class, 'transaction']);
+    Route::get('customer/settlement', [CustomerController::class, 'settlement']);
+    Route::get('customer/setting', [CustomerController::class, 'setting']);
+    Route::get('customer/logout', [CustomerController::class, 'logout']);
 
-Route::patch('/edit/{id}', [CollectionController::class,'edit'])->middleware('auth');
-Route::get('/collect/search', [CollectionController::class, 'search'])->middleware('auth');
-Route::post('clam', [CollectionController::class, 'complete'])->middleware('auth');
-Route::get('clam', [CollectionController::class, 'clam'])->middleware('auth');
-Route::get('customerinfo', [CustomerController::class, 'customerInfo'])->middleware('auth');
-Route::get('searchcate', [CategoryController::class, 'searchcate'])->middleware('auth');
-Route::get('/dashboard', [ShipmentController::class, 'island'])->middleware('auth');
-Route::post('/dashboard/island', [ShipmentController::class, 'createIsland'])->middleware('auth');
-Route::post('/setting/user', [SettingController::class,'AddNewUser'])->middleware('auth');
-Route::patch('/setting/user/{id}', [SettingController::class,'update'])->middleware('auth');
-Route::post('/setting/change', [SettingController::class,'ChangePassword'])->middleware('auth');
+    Route::patch('/edit/{id}', [CollectionController::class,'edit']);
+    Route::get('/collect/search', [CollectionController::class, 'search']);
+    Route::post('clam', [CollectionController::class, 'complete']);
+    Route::get('clam', [CollectionController::class, 'clam']);
+    Route::get('customerinfo', [CustomerController::class, 'customerInfo']);
+    Route::get('searchcate', [CategoryController::class, 'searchcate']);
+    Route::get('/dashboard', [ShipmentController::class, 'island']);
+    Route::post('/dashboard/island', [ShipmentController::class, 'createIsland']);
+    Route::post('/setting/user', [SettingController::class,'AddNewUser']);
+    Route::patch('/setting/user/{id}', [SettingController::class,'update']);
+    Route::patch('/setting/dathuru/{id}', [SettingController::class,'dathuruUpdate']);
+    Route::post('/setting/change', [SettingController::class,'ChangePassword']);
+    Route::post('/setting/dathuru', [SettingController::class,'dathuru']);
 
 
-Route::resource('/category', CategoryController::class)->middleware('auth');
-Route::resource('create', ShipmentController::class)->middleware('auth');
-Route::resource('customer', CustomerController::class)->middleware('auth');
-Route::resource('confirm', PackageController::class)->middleware('auth');
-Route::resource('collect', CollectionController::class)->middleware('auth');
-Route::resource('setting', SettingController::class)->middleware('auth');
+    Route::resource('/category', CategoryController::class);
+    Route::resource('create', ShipmentController::class);
+    Route::resource('customer', CustomerController::class);
+    Route::resource('confirm', PackageController::class);
+    Route::resource('collect', CollectionController::class);
+    Route::resource('setting', SettingController::class);
+});
+// must add auth
 
 

@@ -14,9 +14,14 @@ class package extends Model
         'to',
         'status',
         'customer_id',
+        'vessel_id',
     ];
     public function payment_status()
     {
         return $this->hasOne(receivables::class, 'packID');
+    }
+    public function VesselName()
+    {
+        return $this->hasOne(vessel::class, 'id','vessel_id');
     }
 }

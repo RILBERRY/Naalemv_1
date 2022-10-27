@@ -6,6 +6,9 @@ use App\Models\category;
 use App\Models\package;
 use App\Models\customer;
 use App\Models\islands;
+use App\Models\schedule;
+use App\Models\receivables;
+use App\Models\shipment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -43,14 +46,70 @@ class CustomerController extends Controller
         
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+
+    public function dashboard()
     {
-        //
+        $datetime = date('Y-m-d H:i:s');
+        $LastPack = package::with('VesselName')->where([['customer_id',auth()->user()->custid]])->orderByDesc('id')->First();
+        $transaction = package::where('customer_id',auth()->user()->custid)->orderByDesc('id')->get();
+        $TransColl = package::where([['customer_id',auth()->user()->custid],['status','COLLECTED']])->orderByDesc('id')->get();
+        $TransShipped = package::where([['customer_id',auth()->user()->custid],['status','!=','COLLECTED']])->orderByDesc('id')->get();
+        $transaction->TotalShipments = count($transaction);
+        $transaction->Collected = count($TransColl);
+        $transaction->Shipped = count($TransShipped);
+        if($LastPack){    
+            if($LastPack->status !='COLLECTED'){    
+                $DepatrueTime = schedule::where([['id',$LastPack->vessel_id],['status','!=','COMPLETE']])->orderByDesc('id')->first();
+                $DepatrueTime->isDepatured = false;
+                if($DepatrueTime->dep_date <= $datetime){
+                    $DepatrueTime->isDepatured = true;
+                }
+                return view('customer.dashboard',['transaction'=>$transaction,'LastPack'=>$LastPack, 'DepatrueTime'=>$DepatrueTime]);
+            }
+        }
+        return view('customer.dashboard',['transaction'=>$transaction,'LastPack'=>$LastPack]);
+    }
+    public function schedule()
+    {
+        $schedules = schedule::orderByDesc('id')->get();
+        return view('customer.schedule',['schedules'=>$schedules]);
+    }
+    public function transaction()
+    {
+        $transaction = package::where('customer_id',auth()->user()->custid)->orderByDesc('id')->get();
+        return view('customer.transaction',['transaction'=>$transaction]);
+    }
+    public function settlement()
+    {
+        $transaction = package::where('customer_id',auth()->user()->custid)->orderByDesc('id')->get();
+        $items = shipment::orderByDesc('packages_id')->get();
+        $receivables = receivables::orderByDesc('packID')->get();
+        foreach($transaction as $trans){
+            $total = 0;
+            foreach($receivables as $receiv ){
+                if($trans->id == $receiv->packID){
+                    $trans->paymentStatus = "PAID";
+                    break;
+                }
+                $trans->paymentStatus = "CREDIT";
+            }
+            foreach($items as $item ){
+                if($trans->id == $item->packages_id){
+                    $total+= $item->qty * $item->unit_price;
+                }
+            }
+            $trans->total = $total; 
+        }
+        return view('customer.settlement',['transaction'=>$transaction]);
+    }
+    public function setting()
+    {
+        return view('customer.setting');
+    }
+    public function logout()
+    {
+        return view('customer.logout');
     }
 
     /**
@@ -74,7 +133,6 @@ class CustomerController extends Controller
         $NewCustomer = new customer([
             'CustNumber' => request('CustNumber') ,
             'CustName' => request('CustName')
-            
         ]);
         
         if (customer::where('CustNumber', request('CustNumber'))->exists()){
@@ -103,7 +161,8 @@ class CustomerController extends Controller
                 'CustAddress' => request('CustAddress'),
                 'from' => Request('LFrom'),
                 'to' => Request('ULTo'),
-                'customer_id' => $CustID
+                'customer_id' => $CustID,
+                'vessel_id' => auth()->user()->boatid,
             ]);
             $newpackage = package::where('id', Session::get('newpackage')->id)->get();
             Session::forget('newpackage');
@@ -113,7 +172,8 @@ class CustomerController extends Controller
                 'CustAddress' => request('CustAddress'),
                 'from' => Request('LFrom'),
                 'to' => Request('ULTo'),
-                'customer_id' => $CustID
+                'customer_id' => $CustID,
+                'vessel_id' => auth()->user()->boatid,
             ]);
             $newpackage->save();
             Session::put('newpackage',$newpackage);

@@ -40,7 +40,10 @@ class ShipmentController extends Controller
         return redirect('/customer');
     }
 
-    function island(Request $request){
+    function island(Request $request){    
+        if(auth()->user()->rank == "customer" ){
+            return redirect('/customer/dashboard');
+        }
         $allIslands = islands::orderBy('name','asc')->get();
         Session::get('isDhivehi') ? $lang = "dhi" : $lang = "eng";
         return view("$lang.dashboard",['allIslands' => $allIslands]);
@@ -143,7 +146,8 @@ class ShipmentController extends Controller
                 'CustAddress' => "-",
                 'from' => "-",
                 'to' => "-",
-                'customer_id' => $CustID
+                'customer_id' => $CustID,
+                'vessel_id' => auth()->user()->boatid,
             ]);
             $newpackage->save();
             // Session::put('NewCustomer',$NewCustomer);

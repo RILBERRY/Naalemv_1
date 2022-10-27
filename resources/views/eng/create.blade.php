@@ -47,7 +47,6 @@
             @endif
             <button type="submit" name="Submit" value="SaveCust" class="FormBtn inputSmall " onclick="saving()">SAVE</button>
         </form>
-    
     @endif
 
     <!-- Items Loaded Container -->

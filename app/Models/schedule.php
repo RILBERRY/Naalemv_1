@@ -5,17 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class vessel extends Model
+class schedule extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name',
-        'island',
-        'regno',
+        'dep_date',
+        'visiting_to',
+        'dock_island',
+        'vessel_name',
+        'vessel_Contact',
         'status',
     ];
-    public function VesselName()
-    {
-        return $this->hasOne(package::class, 'vessel_id');
-    }
 }

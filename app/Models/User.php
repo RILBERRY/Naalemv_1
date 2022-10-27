@@ -23,6 +23,7 @@ class User extends Authenticatable
         'boatid',
         'rank',
         'status',
+        'custid',
         'email',
         'password',
     ];

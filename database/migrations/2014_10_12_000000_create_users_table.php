@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('fullname');
             $table->integer('contact');
-            $table->foreignId('boatid')->constrained('vessels');
+            $table->foreignId('boatid')->constrained('vessels')->nullable();
             $table->string('rank');
             $table->boolean('status')->default(true);
             $table->string('email')->unique();
