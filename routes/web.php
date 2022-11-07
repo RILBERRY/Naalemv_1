@@ -23,12 +23,15 @@ Route::get('/', function () {
     return redirect('/login');
 });
 Route::middleware('auth')->group(function () {
+    Route::get('customer/logout', [CustomerController::class, 'logout']);
+
+}
+Route::middleware(['auth','verified'])->group(function () {
     Route::get('customer/dashboard', [CustomerController::class, 'dashboard']);
     Route::get('customer/schedule', [CustomerController::class, 'schedule']);
     Route::get('customer/transaction', [CustomerController::class, 'transaction']);
     Route::get('customer/settlement', [CustomerController::class, 'settlement']);
     Route::get('customer/setting', [CustomerController::class, 'setting']);
-    Route::get('customer/logout', [CustomerController::class, 'logout']);
 
     Route::patch('/edit/{id}', [CollectionController::class,'edit']);
     Route::get('/collect/search', [CollectionController::class, 'search']);
