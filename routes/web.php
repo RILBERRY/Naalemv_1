@@ -25,7 +25,7 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
     Route::get('customer/logout', [CustomerController::class, 'logout']);
 
-}
+});
 Route::middleware(['auth','verified'])->group(function () {
     Route::get('customer/dashboard', [CustomerController::class, 'dashboard']);
     Route::get('customer/schedule', [CustomerController::class, 'schedule']);
