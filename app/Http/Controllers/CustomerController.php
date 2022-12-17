@@ -9,6 +9,7 @@ use App\Models\islands;
 use App\Models\schedule;
 use App\Models\receivables;
 use App\Models\shipment;
+use App\Models\vessel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -59,8 +60,9 @@ class CustomerController extends Controller
         $transaction->Collected = count($TransColl);
         $transaction->Shipped = count($TransShipped);
         if($LastPack){    
-            if($LastPack->status !='COLLECTED'){    
-                $DepatrueTime = schedule::where([['id',$LastPack->vessel_id],['status','!=','COMPLETE']])->orderByDesc('id')->first();
+            if($LastPack->status !='COLLECTED'){  
+                $vessel = vessel::find($LastPack->vessel_id);  
+                $DepatrueTime = schedule::where([['vessel_name',$vessel->name],['status','!=','COMPLETE']])->orderByDesc('id')->first();
                 $DepatrueTime->isDepatured = false;
                 if($DepatrueTime->dep_date <= $datetime){
                     $DepatrueTime->isDepatured = true;
