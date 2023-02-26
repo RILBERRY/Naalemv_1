@@ -41,6 +41,16 @@
                     <input type="text" name="boatRegNo" id="boatRegNo" placeholder="Boat Registration No " class="inputField">
                     <input type="password" name="password" placeholder="Password" class="inputField">
                     <input type="password" name="password_confirmation" placeholder="Password Confirmation" class="inputField">
+                    <div style="display:flex; justify-contents:between;">
+                        <div style="display:flex; justify-contents:between;">
+                            <input onclick="isEmailChecked(true)" id="email" type="checkbox" name="email_otp"  class="inputField">
+                            <label style="margin-top:10px;" for="">Email</label>
+                        </div>
+                        <div style="display:flex; justify-contents:between;">
+                            <input onclick="isEmailChecked(false)" id="sms" type="checkbox" name="sms_otp"  class="inputField">
+                            <label style="margin-top:10px;" for="">SMS</label>
+                        </div>
+                    </div>
                     <button type="submit" class="FormBtn" onclick="saving()" >Register</button>
                     <div class="RegBtn">
                         <a href="/login" class="regLink">Login</a>
@@ -53,6 +63,7 @@
         setTimeout(function(){
             document.getElementById('alertMSG').style.display = "none";
         }, 5000);
+
         function isCustomer(input){
             var selected = document.getElementById(input).value;
             if(selected == "customer"){
@@ -66,6 +77,18 @@
 
             }
         }
+
+        function isEmailChecked(isEmail){
+            if(isEmail){
+                document.getElementById('email').checked = true;
+                document.getElementById('sms').checked = false;
+            }else{
+                document.getElementById('email').checked = false;
+                document.getElementById('sms').checked = true;
+
+            }
+        }
+
     </script>
 </body>
 </html>

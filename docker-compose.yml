@@ -6,7 +6,7 @@ services:
     restart: always
     stdin_open: true
     extra_hosts:
-      - customer.naalemv:192.168.222.24
+      - customer.naalemv:172.20.10.2
     environment:
       - VIRTUAL_HOST=customer.naalemv
     volumes: 

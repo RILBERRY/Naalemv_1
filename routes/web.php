@@ -24,9 +24,12 @@ Route::get('/', function () {
 });
 Route::middleware('auth')->group(function () {
     Route::get('customer/logout', [CustomerController::class, 'logout']);
-
+ 
 });
 Route::middleware(['auth','verified'])->group(function () {
+    Route::get('sms-verifiy', [SettingController::class, 'smsVerifiy'])->name('varifiy-sms');
+    Route::post('verifiy-otp', [SettingController::class, 'VerifiyOtp']);
+
     Route::get('customer/dashboard', [CustomerController::class, 'dashboard']);
     Route::get('customer/schedule', [CustomerController::class, 'schedule']);
     Route::get('customer/transaction', [CustomerController::class, 'transaction']);

@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
+use Twilio\Rest\Client; 
+
 
 class SettingController extends Controller
 {
@@ -116,9 +118,12 @@ class SettingController extends Controller
      * @param  \App\Models\setting  $setting
      * @return \Illuminate\Http\Response
      */
-    public function show(setting $setting)
+    public function smsVerifiy()
     {
-        //
+        $otp = rand(0, 99999);
+        session::put('otp',$otp);
+        $this->sendOTP($otp, '+9609898947');
+        return view('sms-verifiy');
     }
 
     /**
@@ -127,9 +132,12 @@ class SettingController extends Controller
      * @param  \App\Models\setting  $setting
      * @return \Illuminate\Http\Response
      */
-    public function edit(setting $setting)
+    public function VerifiyOtp(Request $request)
     {
-        //
+       if($request->otp == session::get('otp')){
+        dd('ok');
+       }
+       return redirect('/sms-verifiy')->with('status_error','OTP doesent match ! New OTP SENT');
     }
 
     /**
@@ -192,8 +200,22 @@ class SettingController extends Controller
      * @param  \App\Models\setting  $setting
      * @return \Illuminate\Http\Response
      */
-    public function destroy(setting $setting)
+    public function sendOTP($otp, $number)
     {
-        //
+ 
+        $sid    = "AC6542732c447c7ddd1dcd75c864e46845"; 
+        $token  = "a592f1b68f10f7157e2fb75d94247183"; 
+       // Your Account SID and Auth Token from twilio.com/console
+        $twilio_number = "+12563304619";
+
+        $client = new Client($sid, $token);
+        $client->messages->create(
+            // Where to send a text message (your cell phone?)
+            $number,
+            array(
+                'from' => $twilio_number,
+                'body' => 'Naalemv OTP '.$otp
+            )
+        );
     }
 }
