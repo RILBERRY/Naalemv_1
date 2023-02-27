@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Carbon\Carbon;
+use Twilio\Rest\Client; 
 
 
 class SettingController extends Controller
@@ -116,10 +118,55 @@ class SettingController extends Controller
      * @param  \App\Models\setting  $setting
      * @return \Illuminate\Http\Response
      */
-    public function show(setting $setting)
+    public function selectMethode( Request $request)
     {
-        //
+        return view('verifiy-methode');
+        
     }
+    public function sendOTP( Request $request)
+    {
+        $otp = rand(0, 999999);
+        session::put('otpCode',$otp);
+        $status = $request->varify_method == "SMS" 
+        ? $this->sendSMSotp(auth()->user()->contact, $otp)
+        : $this->sendEmailotp(auth()->user()->email, $otp);
+        // return $status == true
+        return redirect('/varify-otp')->with('status_success','OTP Send to '.$request->varify_method);
+        // : redirect('/verifiy-methode')->with('status_error','OTP Send Fail');
+    }
+
+    public function sendSMSotp($number, $otp)
+    {
+
+        // try {
+            $sid    = "AC038354145edddd0e14d83741d4fd703f"; 
+            $token  = "bad67dc8c4d1cfa0323fff0cbb774b16"; 
+           // Your Account SID and Auth Token from twilio.com/console
+            $twilio_number = "+12708195486";
+    
+            $client = new Client($sid, $token);
+            return $client->messages->create(
+                // Where to send a text message (your cell phone?)
+                // $number,
+                '+9609555905',
+                array(
+                    'from' => $twilio_number,
+                    'body' => 'Naalemv OTP '.$otp
+                )
+            );
+        // } catch (\Throwable $th) {
+        //     return false;
+        // }
+        // return true;
+    }
+
+    public function sendEmailotp($email, $otp)
+    {
+      
+    }
+
+
+
 
     /**
      * Show the form for editing the specified resource.
@@ -127,9 +174,21 @@ class SettingController extends Controller
      * @param  \App\Models\setting  $setting
      * @return \Illuminate\Http\Response
      */
-    public function edit(setting $setting)
+    public function varifyOTP()
     {
-        //
+        return view('verifiy-OTP');
+    }
+
+    public function varify(Request $request)
+    {
+        $user = User::find(auth()->user()->id);
+        $request->otp_code == session::get('otpCode') 
+        ?$user->Update([
+            'mobile_verified_at' => Carbon::now()->toDateTimeString(),
+        ])
+        : ''; 
+        return redirect('/dashboard');
+
     }
 
     /**
