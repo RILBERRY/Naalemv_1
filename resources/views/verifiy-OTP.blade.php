@@ -20,13 +20,17 @@
     @endif
     <div class="sideNav">
         <h3 class="LogoHeader">Naale MV</h3>
+        <form action="/logout" method="POST" >
+            @csrf
+            <button type="submit" style="padding:10px 20px; border-radius:10px ; color:white; background-color:green; border:none;"  onclick="saving()">Logout</button>
+        </form>
     </div>
     <div class="mainContainer">
         <div class="pageDisplayHeader">Verification OTP</div>
         <div class="ContentDisplayer ">
             <form action="/varify" method="POST" class="dialogBox">
                 <p> Enter OTP code</p><br>
-                <input type="text" name="otp_code" placeholder="OTP" class="inputField">
+                <input type="text" name="otp_code" placeholder="OTP" class="inputField"  style="width:60%; margin:10px; border:solid 1px; padding:5px; border-radius:5px ;">
               @csrf
             <button type="submit">Varify</button>
           </form>

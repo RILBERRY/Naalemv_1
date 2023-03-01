@@ -20,7 +20,7 @@ class Verified
     {
         if (auth()->user()->email_verified_at == null && auth()->user()->mobile_verified_at == null)
         {
-            return Redirect::guest(URL::route('verifiy.methode'));
+            return Redirect::guest(URL::route('verify.methode'));
         }
 
         return $next($request);

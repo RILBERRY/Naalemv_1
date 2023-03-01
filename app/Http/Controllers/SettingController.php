@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
 use Twilio\Rest\Client; 
+use Mail;
 
 
 class SettingController extends Controller
@@ -130,25 +131,22 @@ class SettingController extends Controller
         $status = $request->varify_method == "SMS" 
         ? $this->sendSMSotp(auth()->user()->contact, $otp)
         : $this->sendEmailotp(auth()->user()->email, $otp);
-        // return $status == true
-        return redirect('/varify-otp')->with('status_success','OTP Send to '.$request->varify_method);
-        // : redirect('/verifiy-methode')->with('status_error','OTP Send Fail');
+        return $status == true
+        ? redirect('/varify-otp')->with('status_success','OTP Send to the '.$request->varify_method)
+        : redirect('/verify-methode')->with('status_error','OTP Send Fail');
     }
 
     public function sendSMSotp($number, $otp)
     {
 
         // try {
-            $sid    = "AC038354145edddd0e14d83741d4fd703f"; 
-            $token  = "bad67dc8c4d1cfa0323fff0cbb774b16"; 
-           // Your Account SID and Auth Token from twilio.com/console
+            $sid = "AC038354145edddd0e14d83741d4fd703f"; 
+            $token  = "6be1dcef4ebae6f9cd6e4427120c61de"; 
             $twilio_number = "+12708195486";
     
             $client = new Client($sid, $token);
             return $client->messages->create(
-                // Where to send a text message (your cell phone?)
-                // $number,
-                '+9609555905',
+                '+960'.$number,
                 array(
                     'from' => $twilio_number,
                     'body' => 'Naalemv OTP '.$otp
@@ -157,12 +155,12 @@ class SettingController extends Controller
         // } catch (\Throwable $th) {
         //     return false;
         // }
-        // return true;
+        return true;
     }
 
-    public function sendEmailotp($email, $otp)
+    public function sendEmailotp($email , $otp)
     {
-      
+       return false;
     }
 
 

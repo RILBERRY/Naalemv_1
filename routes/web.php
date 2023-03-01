@@ -24,7 +24,7 @@ Route::get('/', function () {
 });
 Route::middleware('auth')->group(function () {
     Route::get('customer/logout', [CustomerController::class, 'logout']);
-    Route::get('verifiy-methode', [SettingController::class, 'selectMethode'])->name('verifiy.methode');
+    Route::get('verify-methode', [SettingController::class, 'selectMethode'])->name('verify.methode');
     Route::post('send-otp', [SettingController::class, 'sendOTP']);
     Route::get('varify-otp', [SettingController::class, 'varifyOTP']);
     Route::post('varify', [SettingController::class, 'varify']);

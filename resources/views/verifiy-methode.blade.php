@@ -20,21 +20,27 @@
     @endif
     <div class="sideNav">
         <h3 class="LogoHeader">Naale MV</h3>
+        <form action="/logout" method="POST" >
+            @csrf
+            <button type="submit" style="padding:10px 20px; color:white; background-color:green; border:none;"  onclick="saving()">Logout</button>
+        </form>
     </div>
     <div class="mainContainer">
         <div class="pageDisplayHeader">Verification</div>
         <div class="ContentDisplayer ">
             <form action="/send-otp" method="POST" class="dialogBox">
                 <p> Choose Method to varify</p><br>
-                <select name="varify_method" class="inputField" style=""> <br>
+                <select name="varify_method" class="inputField" style="width:60%; margin:10px; padding:5px; border-radious:10px ;"> <br>
                     <option value="SMS">SMS</option>
                     <option value="Email">Email</option>
                 </select>
               @csrf
             <button type="submit">Send Otp</button>
           </form>
+         
         </div>
     </div>
+   
     <script>
         setTimeout(function(){
             if(document.getElementById('alertMSG')){
