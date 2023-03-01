@@ -30,9 +30,10 @@
         <div class="ContentDisplayer ">
             <form action="/varify" method="POST" class="dialogBox">
                 <p> Enter OTP code</p><br>
-                <input type="text" name="otp_code" placeholder="OTP" class="inputField"  style="width:60%; margin:10px; border:solid 1px; padding:5px; border-radius:5px ;">
+                <input type="text" name="otp_code" placeholder="OTP" class="inputField"  style="width:60%; margin:10px; border:solid 1px; padding:5px; border-radius:5px ;" >
+                <input type="hidden" name="method" value="{{ request()->get('method')}}"  >
               @csrf
-            <button type="submit">Varify</button>
+            <button type="submit" onclick="saving()">Varify</button>
           </form>
         </div>
     </div>

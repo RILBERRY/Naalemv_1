@@ -30,12 +30,12 @@
         <div class="ContentDisplayer ">
             <form action="/send-otp" method="POST" class="dialogBox">
                 <p> Choose Method to varify</p><br>
-                <select name="varify_method" class="inputField" style="width:60%; margin:10px; padding:5px; border-radious:10px ;"> <br>
+                <select name="varify_method" class="inputField" style="width:60%; margin:10px; padding:5px; border-radious:10px ;" > <br>
                     <option value="SMS">SMS</option>
                     <option value="Email">Email</option>
                 </select>
               @csrf
-            <button type="submit">Send Otp</button>
+            <button type="submit" onclick="saving()">Send Otp</button>
           </form>
          
         </div>

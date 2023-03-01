@@ -132,7 +132,7 @@ class SettingController extends Controller
         ? $this->sendSMSotp(auth()->user()->contact, $otp)
         : $this->sendEmailotp(auth()->user()->email, $otp);
         return $status == true
-        ? redirect('/varify-otp')->with('status_success','OTP Send to the '.$request->varify_method)
+        ? redirect('/varify-otp?method='.$request->varify_method)->with('status_success','OTP Send to the '.$request->varify_method)
         : redirect('/verify-methode')->with('status_error','OTP Send Fail');
     }
 
@@ -160,7 +160,13 @@ class SettingController extends Controller
 
     public function sendEmailotp($email , $otp)
     {
-       return false;
+        $data = array('msg' =>'Naalemv OTP '.$otp);
+        Mail::send('mail-format', $data, function($message) {
+            $message->to('alirilwan16@gmail.com')->subject('Naalemv Varification Token');
+            $message->from('noreply.naalemv@gmail.com','Naalemv');
+        });
+
+       return true;
     }
 
 
@@ -180,11 +186,13 @@ class SettingController extends Controller
     public function varify(Request $request)
     {
         $user = User::find(auth()->user()->id);
-        $request->otp_code == session::get('otpCode') 
-        ?$user->Update([
+        ($request->otp_code != session::get('otpCode') ?: $request->method == 'SMS')
+        ? $user->Update([
             'mobile_verified_at' => Carbon::now()->toDateTimeString(),
         ])
-        : ''; 
+        : $user->Update([
+            'email_verified_at' => Carbon::now()->toDateTimeString(),
+        ]); 
         return redirect('/dashboard');
 
     }
