@@ -141,7 +141,7 @@ class SettingController extends Controller
 
         // try {
             $sid = "AC038354145edddd0e14d83741d4fd703f"; 
-            $token  = "6be1dcef4ebae6f9cd6e4427120c61de"; 
+            $token  = "c8be6fd641aece024061609e438cb9ae"; 
             $twilio_number = "+12708195486";
     
             $client = new Client($sid, $token);
@@ -161,8 +161,8 @@ class SettingController extends Controller
     public function sendEmailotp($email , $otp)
     {
         $data = array('msg' =>'Naalemv OTP '.$otp);
-        Mail::send('mail-format', $data, function($message) {
-            $message->to('alirilwan16@gmail.com')->subject('Naalemv Varification Token');
+        Mail::send('mail-format', $data, function($message) use ($email) {
+            $message->to($email)->subject('Naalemv Varification Token');
             $message->from('noreply.naalemv@gmail.com','Naalemv');
         });
 
